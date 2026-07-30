@@ -260,3 +260,26 @@ function showToast(msg, type = '') {
   t.className = 'toast ' + type + ' show';
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+window.exportData = function() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ transactions, goal }));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `anuhas-wage-saver-backup.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+  showToast('📥 Data exported successfully!', 'success');
+};
+
+window.resetAllData = function() {
+  if (confirm('ඔබේ සියලුම ගනුදෙනු සහ ඉලක්ක මකා දැමීමට අවශ්‍යද? (Are you sure you want to reset all data?)')) {
+    transactions = [];
+    goal = null;
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(GOAL_KEY);
+    renderAll();
+    showToast('🗑️ Data reset successfully.', 'success');
+  }
+};
+
