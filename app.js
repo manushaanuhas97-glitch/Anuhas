@@ -147,26 +147,47 @@ document.addEventListener('mousemove', (e) => {
 function applyAdminConfig() {
   const config = JSON.parse(localStorage.getItem('anuhas_admin_config_v1')) || {};
 
-  document.querySelectorAll('.tool-card').forEach((card) => {
-    const key = card.getAttribute('data-tool-key');
-    if (!key) return;
+  const tools = ['pc-optimizer', 'wage-saver', 'unit-converter', 'stopwatch', 'color-picker', 'password-generator', 'qr-generator', 'notes', 'calculator'];
+
+  tools.forEach((key) => {
+    const card = document.querySelector(`[data-tool-key="${key}"]`);
+    if (!card) return;
 
     const isEnabled = config[key] !== false;
     const badge = document.getElementById(`badge-uses-${key}`);
 
     if (!isEnabled) {
       card.classList.add('coming-soon');
+      card.style.opacity = '0.45';
+      card.style.pointerEvents = 'auto';
+      card.onclick = function() {
+        alert('🛑 මෙම Tool එක හිමිකරු (Manusha Anuhas) විසින් නඩත්තු කටයුතු (Maintenance) සදහා තාවකාලිකව නවතා ඇත.');
+      };
+
       if (badge) {
-        badge.textContent = 'OFF / MAINTENANCE';
+        badge.textContent = '🛑 OFF / MAINTENANCE';
         badge.className = 'tool-status-badge upcoming';
+        badge.style.background = 'rgba(239, 68, 68, 0.2)';
+        badge.style.color = '#ef4444';
+        badge.style.borderColor = 'rgba(239, 68, 68, 0.4)';
       }
+    } else {
+      card.classList.remove('coming-soon');
+      card.style.opacity = '1';
+      card.onclick = function() {
+        checkAndOpenTool(key, `tools/${key}/index.html`);
+      };
     }
   });
 
   const banner = document.getElementById('globalNoticeBanner');
-  if (banner && config.notice) {
-    banner.textContent = `📢 ${config.notice}`;
-    banner.classList.remove('hidden');
+  if (banner) {
+    if (config.notice) {
+      banner.textContent = `📢 ${config.notice}`;
+      banner.classList.remove('hidden');
+    } else {
+      banner.classList.add('hidden');
+    }
   }
 }
 
