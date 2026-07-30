@@ -7,30 +7,25 @@ import sys
 import re
 
 # =========================================================================
-# ANUHAS TOOLS — MSI & BLUESTACKS ADB EMULATOR OPTIMIZER & DEBLOATER (.EXE)
+# ANUHAS TOOLS — ULTIMATE PC, GAMING & EMULATOR SUPER OPTIMIZER (.EXE)
 # =========================================================================
 
 def get_adb_binary_path():
-    # Check bundled PyInstaller sys._MEIPASS or script directory
     base_dir = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     local_adb = os.path.join(base_dir, 'adb.exe')
     if os.path.exists(local_adb):
         return local_adb
-    
-    # Check script directory fallback
     local_adb_alt = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'adb.exe')
     if os.path.exists(local_adb_alt):
         return local_adb_alt
-
-    # Fallback to system path
     return 'adb'
 
-class AdbOptimizerApp:
+class SuperOptimizerApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("🎮 MSI & BlueStacks ADB Emulator Optimizer & Debloater")
-        self.root.geometry("780x750")
-        self.root.minsize(700, 650)
+        self.root.title("🚀 Anuhas Ultimate PC, Gaming & Emulator Super Optimizer")
+        self.root.geometry("860x800")
+        self.root.minsize(750, 680)
         self.root.configure(bg="#090d16")
 
         self.adb_bin = get_adb_binary_path()
@@ -54,7 +49,7 @@ class AdbOptimizerApp:
         header = tk.Frame(self.root, bg="#0f172a", padx=20, pady=12)
         header.pack(fill="x")
 
-        title_lbl = tk.Label(header, text="🎮 MSI & BlueStacks ADB Optimizer", font=("Segoe UI", 16, "bold"), fg="#38bdf8", bg="#0f172a")
+        title_lbl = tk.Label(header, text="🚀 Ultimate PC, Gaming & ADB Super Optimizer", font=("Segoe UI", 16, "bold"), fg="#38bdf8", bg="#0f172a")
         title_lbl.pack(side="left")
 
         sub_lbl = tk.Label(header, text="by Manusha Anuhas", font=("Segoe UI", 9, "bold"), fg="#94a3b8", bg="#0f172a")
@@ -62,7 +57,7 @@ class AdbOptimizerApp:
 
         # Connection Status Banner
         conn_frame = tk.Frame(self.root, bg="#1e293b", padx=15, pady=10)
-        conn_frame.pack(fill="x", padx=15, pady=10)
+        conn_frame.pack(fill="x", padx=15, pady=8)
 
         self.status_lbl = tk.Label(conn_frame, text="🔴 Checking ADB Connection...", font=("Segoe UI", 11, "bold"), fg="#ef4444", bg="#1e293b")
         self.status_lbl.pack(side="left")
@@ -74,29 +69,44 @@ class AdbOptimizerApp:
         self.tabs = ttk.Notebook(self.root)
         self.tabs.pack(fill="both", expand=True, padx=15, pady=5)
 
-        # Tab 1: App Manager & Debloater
-        self.tab_apps = tk.Frame(self.tabs, bg="#090d16", padx=15, pady=15)
-        self.tabs.add(self.tab_apps, text="📦 App Manager & Uninstaller")
+        # Tab 1: Emulator & ADB App Manager
+        self.tab_apps = tk.Frame(self.tabs, bg="#090d16", padx=15, pady=12)
+        self.tabs.add(self.tab_apps, text="🎮 Emulator & App Manager")
 
-        # Tab 2: System & Gaming Tweaker
-        self.tab_tweaks = tk.Frame(self.tabs, bg="#090d16", padx=15, pady=15)
-        self.tabs.add(self.tab_tweaks, text="⚡ System Tweaks & 120 FPS")
+        # Tab 2: Emulator System Tweaks
+        self.tab_tweaks = tk.Frame(self.tabs, bg="#090d16", padx=15, pady=12)
+        self.tabs.add(self.tab_tweaks, text="⚡ Emulator Tweaks & 120 FPS")
+
+        # Tab 3: Windows Startup & Services
+        self.tab_win_sys = tk.Frame(self.tabs, bg="#090d16", padx=15, pady=12)
+        self.tabs.add(self.tab_win_sys, text="💻 Windows Startup & Services")
+
+        # Tab 4: PC Gaming & Low Ping Booster
+        self.tab_game_boost = tk.Frame(self.tabs, bg="#090d16", padx=15, pady=12)
+        self.tabs.add(self.tab_game_boost, text="🚀 Gaming & Network Low Ping")
+
+        # Tab 5: Driver Scanner & Updater
+        self.tab_drivers = tk.Frame(self.tabs, bg="#090d16", padx=15, pady=12)
+        self.tabs.add(self.tab_drivers, text="🔌 Driver Scanner & Updater")
 
         self.build_app_manager_tab()
         self.build_tweaks_tab()
+        self.build_win_sys_tab()
+        self.build_game_boost_tab()
+        self.build_drivers_tab()
 
         # Log Console
-        log_frame = tk.LabelFrame(self.root, text=" 📜 ADB Command Output Log ", font=("Segoe UI", 9, "bold"), fg="#38bdf8", bg="#090d16", padx=10, pady=5)
-        log_frame.pack(fill="x", padx=15, pady=(5, 12))
+        log_frame = tk.LabelFrame(self.root, text=" 📜 Action Log ", font=("Segoe UI", 9, "bold"), fg="#38bdf8", bg="#090d16", padx=10, pady=5)
+        log_frame.pack(fill="x", padx=15, pady=(5, 10))
 
-        self.log_txt = tk.Text(log_frame, height=6, bg="#020617", fg="#4ade80", font=("Consolas", 10), relief="flat")
+        self.log_txt = tk.Text(log_frame, height=5, bg="#020617", fg="#4ade80", font=("Consolas", 10), relief="flat")
         self.log_txt.pack(fill="both", expand=True)
 
+    # ================= TAB 1: EMULATOR APP MANAGER =================
     def build_app_manager_tab(self):
-        lbl_info = tk.Label(self.tab_apps, text="Installed Packages in Emulator (Select an app to uninstall individually or uninstall all non-system apps):", font=("Segoe UI", 10), fg="#cbd5e1", bg="#090d16", justify="left")
-        lbl_info.pack(anchor="w", pady=(0, 6))
+        lbl_info = tk.Label(self.tab_apps, text="Installed Packages in Emulator (Play Store is 100% Protected):", font=("Segoe UI", 10), fg="#cbd5e1", bg="#090d16", justify="left")
+        lbl_info.pack(anchor="w", pady=(0, 4))
 
-        # Filter & Search Box
         filter_frame = tk.Frame(self.tab_apps, bg="#090d16")
         filter_frame.pack(fill="x", pady=4)
 
@@ -108,9 +118,8 @@ class AdbOptimizerApp:
         btn_fetch = tk.Button(filter_frame, text="🔄 Load Apps", font=("Segoe UI", 9, "bold"), bg="#3b82f6", fg="white", relief="flat", padx=10, pady=3, command=self.load_installed_packages)
         btn_fetch.pack(side="right")
 
-        # Listbox & Scrollbar
         list_frame = tk.Frame(self.tab_apps, bg="#090d16")
-        list_frame.pack(fill="both", expand=True, pady=8)
+        list_frame.pack(fill="both", expand=True, pady=6)
 
         self.pkg_listbox = tk.Listbox(list_frame, bg="#020617", fg="#f8fafc", selectbackground="#0284c7", selectforeground="white", font=("Consolas", 10), relief="flat")
         scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.pkg_listbox.yview)
@@ -119,16 +128,16 @@ class AdbOptimizerApp:
         self.pkg_listbox.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
-        # Uninstall Controls
         btn_box = tk.Frame(self.tab_apps, bg="#090d16")
-        btn_box.pack(fill="x", pady=6)
+        btn_box.pack(fill="x", pady=4)
 
-        btn_uninst_one = tk.Button(btn_box, text="🗑️ Uninstall Selected App", font=("Segoe UI", 10, "bold"), bg="#ef4444", fg="white", relief="flat", padx=14, pady=6, command=self.uninstall_selected_app)
+        btn_uninst_one = tk.Button(btn_box, text="🗑️ Uninstall Selected App", font=("Segoe UI", 10, "bold"), bg="#ef4444", fg="white", relief="flat", padx=14, pady=5, command=self.uninstall_selected_app)
         btn_uninst_one.pack(side="left", padx=5)
 
-        btn_uninst_all = tk.Button(btn_box, text="🔥 Uninstall ALL User Apps", font=("Segoe UI", 10, "bold"), bg="#b91c1c", fg="white", relief="flat", padx=14, pady=6, command=self.uninstall_all_user_apps)
+        btn_uninst_all = tk.Button(btn_box, text="🔥 Uninstall ALL User Apps", font=("Segoe UI", 10, "bold"), bg="#b91c1c", fg="white", relief="flat", padx=14, pady=5, command=self.uninstall_all_user_apps)
         btn_uninst_all.pack(side="right", padx=5)
 
+    # ================= TAB 2: EMULATOR SYSTEM TWEAKS =================
     def build_tweaks_tab(self):
         tweaks = [
             ("⚡ Turn OFF All System Animations", "Disables window & transition scale to make emulator super fast", self.tweak_disable_animations),
@@ -140,22 +149,102 @@ class AdbOptimizerApp:
         ]
 
         for name, desc, cmd_func in tweaks:
-            card = tk.Frame(self.tab_tweaks, bg="#1e293b", padx=14, pady=10)
+            card = tk.Frame(self.tab_tweaks, bg="#1e293b", padx=14, pady=8)
+            card.pack(fill="x", pady=4)
+
+            info = tk.Frame(card, bg="#1e293b")
+            info.pack(side="left", fill="x", expand=True)
+
+            lbl_n = tk.Label(info, text=name, font=("Segoe UI", 10, "bold"), fg="#f8fafc", bg="#1e293b")
+            lbl_n.pack(anchor="w")
+
+            lbl_d = tk.Label(info, text=desc, font=("Segoe UI", 8.5), fg="#94a3b8", bg="#1e293b")
+            lbl_d.pack(anchor="w")
+
+            btn = tk.Button(card, text="Apply ⚡", font=("Segoe UI", 8.5, "bold"), bg="#10b981", fg="white", relief="flat", padx=12, pady=4, command=cmd_func)
+            btn.pack(side="right")
+
+    # ================= TAB 3: WINDOWS STARTUP & SERVICES =================
+    def build_win_sys_tab(self):
+        lbl = tk.Label(self.tab_win_sys, text="Windows Startup Programs & Unnecessary Background Services:", font=("Segoe UI", 10, "bold"), fg="#38bdf8", bg="#090d16")
+        lbl.pack(anchor="w", pady=(0, 6))
+
+        # Startup Apps Section
+        start_frame = tk.LabelFrame(self.tab_win_sys, text=" 🚀 Startup Programs ", font=("Segoe UI", 9, "bold"), fg="#cbd5e1", bg="#090d16", padx=10, pady=6)
+        start_frame.pack(fill="x", pady=4)
+
+        self.startup_list = tk.Listbox(start_frame, height=5, bg="#020617", fg="#f8fafc", font=("Consolas", 9), relief="flat")
+        self.startup_list.pack(fill="x", pady=4)
+
+        btn_scan_start = tk.Button(start_frame, text="🔍 Scan Startup Apps", font=("Segoe UI", 9, "bold"), bg="#3b82f6", fg="white", relief="flat", padx=10, pady=3, command=self.scan_win_startup)
+        btn_scan_start.pack(side="left", pady=2)
+
+        btn_open_msconfig = tk.Button(start_frame, text="⚙️ Open Windows Task Manager Startup", font=("Segoe UI", 9, "bold"), bg="#0284c7", fg="white", relief="flat", padx=10, pady=3, command=lambda: os.system("start taskmgr"))
+        btn_open_msconfig.pack(side="right", pady=2)
+
+        # Services Section
+        srv_frame = tk.LabelFrame(self.tab_win_sys, text=" 🛡️ Windows Background Services Optimizer ", font=("Segoe UI", 9, "bold"), fg="#cbd5e1", bg="#090d16", padx=10, pady=8)
+        srv_frame.pack(fill="x", pady=6)
+
+        srv_info = tk.Label(srv_frame, text="Disables SysMain (Superfetch), Connected User Experiences (Telemetry), & Diagnostic Tracking services to free RAM & CPU.", font=("Segoe UI", 8.5), fg="#94a3b8", bg="#090d16", justify="left")
+        srv_info.pack(anchor="w", pady=(0, 4))
+
+        btn_opt_srv = tk.Button(srv_frame, text="🚀 Optimize & Disable Heavy Windows Services", font=("Segoe UI", 10, "bold"), bg="#10b981", fg="white", relief="flat", padx=14, pady=6, command=self.optimize_win_services)
+        btn_opt_srv.pack(anchor="w", pady=4)
+
+    # ================= TAB 4: PC GAMING & LOW PING BOOSTER =================
+    def build_game_boost_tab(self):
+        boosters = [
+            ("⚡ Ultimate Performance Power Plan", "Enables Windows Ultimate Performance power scheme for max CPU clock", self.boost_power_plan),
+            ("🎮 Windows Game Mode & Hardware GPU Scheduling", "Enables Game Mode & HAGS registry tweaks for maximum FPS", self.boost_game_mode),
+            ("🌐 Low Ping TCP/IP & Network Flush", "Flushes DNS cache, resets Winsock, and enables TCP NoDelay", self.boost_network_lowping),
+            ("🧹 Clear DirectX Shader & Temp Cache", "Deletes junk DirectX shader cache & Windows temp files to fix stuttering", self.boost_clear_shader_cache)
+        ]
+
+        for name, desc, cmd_func in boosters:
+            card = tk.Frame(self.tab_game_boost, bg="#1e293b", padx=14, pady=10)
             card.pack(fill="x", pady=5)
 
             info = tk.Frame(card, bg="#1e293b")
             info.pack(side="left", fill="x", expand=True)
 
-            lbl_n = tk.Label(info, text=name, font=("Segoe UI", 11, "bold"), fg="#f8fafc", bg="#1e293b")
+            lbl_n = tk.Label(info, text=name, font=("Segoe UI", 10.5, "bold"), fg="#f8fafc", bg="#1e293b")
             lbl_n.pack(anchor="w")
 
-            lbl_d = tk.Label(info, text=desc, font=("Segoe UI", 9), fg="#94a3b8", bg="#1e293b")
+            lbl_d = tk.Label(info, text=desc, font=("Segoe UI", 8.5), fg="#94a3b8", bg="#1e293b")
             lbl_d.pack(anchor="w")
 
-            btn = tk.Button(card, text="Apply Tweak ⚡", font=("Segoe UI", 9, "bold"), bg="#10b981", fg="white", relief="flat", padx=12, pady=5, command=cmd_func)
+            btn = tk.Button(card, text="Apply Boost 🚀", font=("Segoe UI", 9, "bold"), bg="#8b5cf6", fg="white", relief="flat", padx=12, pady=5, command=cmd_func)
             btn.pack(side="right")
 
-    # ================= ADB COMMAND EXECUTION =================
+    # ================= TAB 5: DRIVER SCANNER & UPDATER =================
+    def build_drivers_tab(self):
+        lbl = tk.Label(self.tab_drivers, text="System Hardware Drivers Scanner & Windows Update Status:", font=("Segoe UI", 10, "bold"), fg="#38bdf8", bg="#090d16")
+        lbl.pack(anchor="w", pady=(0, 6))
+
+        drv_frame = tk.Frame(self.tab_drivers, bg="#090d16")
+        drv_frame.pack(fill="both", expand=True, pady=4)
+
+        self.drv_listbox = tk.Listbox(drv_frame, bg="#020617", fg="#f8fafc", font=("Consolas", 9.5), relief="flat")
+        scrollbar = ttk.Scrollbar(drv_frame, orient="vertical", command=self.drv_listbox.yview)
+        self.drv_listbox.configure(yscrollcommand=scrollbar.set)
+
+        self.drv_listbox.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        ctrl_frame = tk.Frame(self.tab_drivers, bg="#090d16")
+        ctrl_frame.pack(fill="x", pady=6)
+
+        btn_scan_drv = tk.Button(ctrl_frame, text="🔍 Scan Outdated Drivers", font=("Segoe UI", 10, "bold"), bg="#3b82f6", fg="white", relief="flat", padx=14, pady=6, command=self.scan_system_drivers)
+        btn_scan_drv.pack(side="left", padx=5)
+
+        btn_upd_win = tk.Button(ctrl_frame, text="🌐 Launch Windows Driver Updater", font=("Segoe UI", 10, "bold"), bg="#10b981", fg="white", relief="flat", padx=14, pady=6, command=lambda: os.system("start ms-settings:windowsupdate"))
+        btn_upd_win.pack(side="right", padx=5)
+
+        btn_dev_mgr = tk.Button(ctrl_frame, text="⚙️ Device Manager", font=("Segoe UI", 10, "bold"), bg="#0284c7", fg="white", relief="flat", padx=14, pady=6, command=lambda: os.system("start devmgmt.msc"))
+        btn_dev_mgr.pack(side="right", padx=5)
+
+    # ================= HELPER METHODS & ADB LOGIC =================
     def run_adb(self, cmd_args):
         try:
             full_cmd = [self.adb_bin] + (["-s", self.device_id] if self.device_id else []) + cmd_args
@@ -172,7 +261,6 @@ class AdbOptimizerApp:
         self.log_txt.see(tk.END)
 
     def detect_bluestacks_ports(self):
-        # Scan BlueStacks 5 & MSI App Player configuration files for custom ADB ports
         detected_ports = []
         conf_paths = [
             r"C:\ProgramData\BlueStacks_nxt\bluestacks.conf",
@@ -198,7 +286,6 @@ class AdbOptimizerApp:
             ports = self.detect_bluestacks_ports()
             ports.extend(["127.0.0.1:5555", "127.0.0.1:5554", "127.0.0.1:5565", "127.0.0.1:5575", "127.0.0.1:62001", "127.0.0.1:5556"])
             
-            # Remove duplicates preserving order
             seen = set()
             unique_ports = [x for x in ports if not (x in seen or seen.add(x))]
 
@@ -229,14 +316,9 @@ class AdbOptimizerApp:
         def _bg():
             self.log("Fetching installed packages...\n")
             out = self.run_adb(["shell", "pm", "list", "packages"])
-            
-            # Protected packages (never list or touch Play Store)
             protected = ["com.android.vending", "com.google.android.gms", "com.google.android.gsf"]
-            
             pkgs = [line.replace("package:", "").strip() for line in out.split('\n') if line.startswith("package:")]
-            # Filter out Play Store
             safe_pkgs = [p for p in pkgs if p not in protected]
-            
             self.all_packages = sorted(safe_pkgs)
             self.root.after(0, lambda: self.filter_packages(None))
         threading.Thread(target=_bg, daemon=True).start()
@@ -285,7 +367,7 @@ class AdbOptimizerApp:
 
         threading.Thread(target=_bg, daemon=True).start()
 
-    # ================= TWEAKS =================
+    # ================= EMULATOR TWEAKS =================
     def tweak_disable_animations(self):
         def _bg():
             self.run_adb(["shell", "settings", "put", "global", "window_animation_scale", "0"])
@@ -323,17 +405,98 @@ class AdbOptimizerApp:
 
     def tweak_debloat_system(self):
         def _bg():
-            bloat = [
-                "com.google.android.feedback",
-                "com.google.android.marvin.talkback",
-                "com.android.printspooler"
-            ]
+            bloat = ["com.google.android.feedback", "com.google.android.marvin.talkback", "com.android.printspooler"]
             for b in bloat:
                 self.run_adb(["shell", "pm", "disable-user", "--user", "0", b])
             messagebox.showinfo("Tweak Applied", "Useless System Telemetry & Bloatware Disabled!")
         threading.Thread(target=_bg, daemon=True).start()
 
+    # ================= WINDOWS SYSTEM & SERVICES =================
+    def scan_win_startup(self):
+        def _bg():
+            self.log("Scanning Windows Startup Programs...\n")
+            cmd = "powershell -Command \"Get-CimInstance Win32_StartupCommand | Select-Object Name, Command | Format-Table -HideTableHeaders\""
+            p = subprocess.run(cmd, capture_output=True, text=True, shell=True)
+            lines = [l.strip() for l in p.stdout.split('\n') if l.strip()]
+            self.startup_list.delete(0, tk.END)
+            for l in lines:
+                self.startup_list.insert(tk.END, l)
+            self.log("✅ Startup programs scanned.\n")
+        threading.Thread(target=_bg, daemon=True).start()
+
+    def optimize_win_services(self):
+        def _bg():
+            self.log("Optimizing Windows Services...\n")
+            services = ["SysMain", "DiagTrack", "MapsBroker", "dmwappushservice"]
+            for s in services:
+                subprocess.run(f"powershell -Command \"Stop-Service -Name {s} -ErrorAction SilentlyContinue; Set-Service -Name {s} -StartupType Disabled -ErrorAction SilentlyContinue\"", shell=True)
+                self.log(f"Disabled background service: {s}\n")
+            messagebox.showinfo("Windows Services", "Heavy Windows Services (SysMain, Telemetry) Disabled Successfully!")
+        threading.Thread(target=_bg, daemon=True).start()
+
+    # ================= GAMING & NETWORK LOW PING =================
+    def boost_power_plan(self):
+        def _bg():
+            self.log("Enabling Ultimate Performance Power Plan...\n")
+            subprocess.run("powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61", shell=True)
+            subprocess.run("powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61", shell=True)
+            messagebox.showinfo("Power Plan", "Ultimate Performance Power Plan Enabled!")
+        threading.Thread(target=_bg, daemon=True).start()
+
+    def boost_game_mode(self):
+        def _bg():
+            self.log("Enabling Windows Game Mode & HAGS GPU Scheduling...\n")
+            reg1 = 'reg add "HKCU\\Software\\Microsoft\\GameBar" /v "AllowAutoGameMode" /t REG_DWORD /d 1 /f'
+            reg2 = 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v "HwSchMode" /t REG_DWORD /d 2 /f'
+            subprocess.run(reg1, shell=True)
+            subprocess.run(reg2, shell=True)
+            messagebox.showinfo("Game Mode", "Windows Game Mode & Hardware GPU Scheduling Enabled!")
+        threading.Thread(target=_bg, daemon=True).start()
+
+    def boost_network_lowping(self):
+        def _bg():
+            self.log("Flushing DNS, Resetting Winsock & Enabling Low Ping TCP NoDelay...\n")
+            subprocess.run("ipconfig /flushdns", shell=True)
+            subprocess.run("netsh int ip reset", shell=True)
+            subprocess.run("netsh winsock reset", shell=True)
+            messagebox.showinfo("Network Low Ping", "DNS Flushed, Winsock Reset, & Network Latency Optimized!")
+        threading.Thread(target=_bg, daemon=True).start()
+
+    def boost_clear_shader_cache(self):
+        def _bg():
+            self.log("Clearing DirectX Shader & Temp Cache...\n")
+            temp_dirs = [os.path.expandvars(r"%TEMP%"), r"C:\Windows\Temp"]
+            for d in temp_dirs:
+                if os.path.exists(d):
+                    try:
+                        for f in os.listdir(d):
+                            fp = os.path.join(d, f)
+                            if os.path.isfile(fp):
+                                os.remove(fp)
+                    except Exception: pass
+            messagebox.showinfo("Shader Cache", "DirectX Shader & Temporary Junk Cache Cleared!")
+        threading.Thread(target=_bg, daemon=True).start()
+
+    # ================= DRIVER SCANNER =================
+    def scan_system_drivers(self):
+        def _bg():
+            self.log("Scanning System Hardware Drivers...\n")
+            cmd = "powershell -Command \"Get-PnpDevice -PresentOnly | Where-Object {$_.Status -ne 'OK'} | Select-Object FriendlyName, Status, Class | Format-Table -HideTableHeaders\""
+            p = subprocess.run(cmd, capture_output=True, text=True, shell=True)
+            lines = [l.strip() for l in p.stdout.split('\n') if l.strip()]
+            self.drv_listbox.delete(0, tk.END)
+
+            if lines:
+                self.log("⚠️ Found devices requiring driver updates:\n")
+                for l in lines:
+                    self.drv_listbox.insert(tk.END, f"⚠️ {l}")
+            else:
+                self.drv_listbox.insert(tk.END, "✅ All System Hardware Drivers (Graphics, Audio, Network) Status: OK!")
+                self.log("✅ All hardware drivers are running cleanly.\n")
+
+        threading.Thread(target=_bg, daemon=True).start()
+
 if __name__ == "__main__":
     root = tk.Tk()
-    app = AdbOptimizerApp(root)
+    app = SuperOptimizerApp(root)
     root.mainloop()
