@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anuhas Tools — Modern Web Tools Hub</title>
-  <meta name="description" content="Anuhas Tools — Ultimate suite of fast, modern, 100% free web tools including Wage Saver LKR, Unit Converter, and Stopwatch Timer created by Anuhas." />
-  <meta name="keywords" content="Anuhas Tools, Anuhas, Wage Saver, Wage Saver LKR, Sri Lanka savings tracker, Unit converter, Stopwatch, Anuhas web tools" />
+  <title>Anuhas Tools — Futuristic Tool Suite</title>
+  <meta name="description" content="Anuhas Tools — Ultimate suite of fast, modern, 100% free web tools including PC Optimizer, Wage Saver, Unit Converter, and Password Generator by Anuhas." />
+  <meta name="keywords" content="Anuhas Tools, Anuhas, PC Optimizer, Gaming Optimizer, Wage Saver, Unit converter, Password Generator, QR Studio" />
   <meta name="author" content="Anuhas" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://manushaanuhas97-glitch.github.io/anuhas-tools/" />
@@ -15,12 +15,6 @@
   <meta property="og:url" content="https://manushaanuhas97-glitch.github.io/anuhas-tools/" />
   <meta property="og:title" content="Anuhas Tools — Modern Web Tools Hub" />
   <meta property="og:description" content="Ultimate suite of fast, modern, 100% free web tools by Anuhas." />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://manushaanuhas97-glitch.github.io/anuhas-tools/" />
-  <meta property="twitter:title" content="Anuhas Tools — Modern Web Tools Hub" />
-  <meta property="twitter:description" content="Ultimate suite of fast, modern, 100% free web tools by Anuhas." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,6 +30,9 @@
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
   <div class="bg-orb orb-3"></div>
+
+  <!-- Global Announcement Banner -->
+  <div id="globalNoticeBanner" class="global-notice hidden"></div>
 
   <!-- ═══════════════════════════════════════ LOADING SCENE -->
   <div id="loadingScreen" class="loading-screen">
@@ -69,7 +66,7 @@
                     <div class="zipper-pull"></div>
                   </div>
                   <div class="tool-burst" id="toolBurst">
-                    <span class="burst-item b1">💎</span>
+                    <span class="burst-item b1">🎮</span>
                     <span class="burst-item b2">💰</span>
                     <span class="burst-item b3">🔢</span>
                     <span class="burst-item b4">⏱️</span>
@@ -117,6 +114,11 @@
         <input type="text" id="toolSearchInput" placeholder="Tools සොයන්න... (Ctrl+K)" oninput="filterTools()" />
       </div>
       <div class="nav-actions">
+        <!-- Live Online Visitors Ticker -->
+        <div class="live-status-pill">
+          <span class="pulse-dot"></span>
+          <span id="liveUsersCount">18 Live Users</span>
+        </div>
         <a href="https://wa.me/94760870140" target="_blank" class="contact-pill-btn">
           <span class="phone-icon">📞</span>
           <span>076 087 0140</span>
@@ -137,18 +139,18 @@
             <span class="gradient-text">Built for Everyone.</span>
           </h1>
           <p class="hero-desc">
-            ඕනෑම කෙනෙකුට තමන්ගේ දෛනික වැඩ කටයුතු (Finance, Converting, Timing, Passwords, QR Codes) ලෙහෙසියෙන්ම සහ නොමිලේම කරගැනීමට සාදන ලද Universal Tools Hub එකක්!
+            ඕනෑම කෙනෙකුට තමන්ගේ දෛනික වැඩ කටයුතු (Gaming Optimizers, Finance, Converting, Timing, Passwords, QR Codes) ලෙහෙසියෙන්ම සහ නොමිලේම කරගැනීමට සාදන ලද Universal Tools Hub එකක්!
           </p>
 
           <div class="hero-stats-row">
             <div class="h-stat">
-              <span class="h-stat-num" id="statCount">6</span>
+              <span class="h-stat-num" id="statCount">7</span>
               <span class="h-stat-lbl">Active Tools</span>
             </div>
             <div class="h-stat-divider"></div>
             <div class="h-stat">
-              <span class="h-stat-num">0ms</span>
-              <span class="h-stat-lbl">Server Delay</span>
+              <span class="h-stat-num" id="heroLiveUsers">24</span>
+              <span class="h-stat-lbl">Live Online Users</span>
             </div>
             <div class="h-stat-divider"></div>
             <div class="h-stat">
@@ -180,31 +182,31 @@
               <span class="card-header-title">anuhas-tools.app</span>
             </div>
             <div class="hero-card-body">
+              <div class="featured-tool-mini" onclick="openTool('tools/pc-optimizer/index.html')">
+                <div class="ft-icon">🎮</div>
+                <div class="ft-info">
+                  <div class="ft-name">PC & Gaming Optimizer</div>
+                  <div class="ft-sub">FPS Boosters & RAM Cleaners</div>
+                </div>
+                <div class="ft-badge">NEW 🔥</div>
+              </div>
+
               <div class="featured-tool-mini" onclick="openTool('tools/wage-saver/index.html')">
                 <div class="ft-icon">💰</div>
                 <div class="ft-info">
                   <div class="ft-name">Wage Saver</div>
                   <div class="ft-sub">LKR Income & Savings Tracker</div>
                 </div>
-                <div class="ft-badge">POPULAR 🔥</div>
+                <div class="ft-badge blue">POPULAR ⚡</div>
               </div>
 
-              <div class="featured-tool-mini" onclick="openTool('tools/unit-converter/index.html')">
-                <div class="ft-icon">🔢</div>
+              <div class="featured-tool-mini" onclick="openTool('tools/qr-generator/index.html')">
+                <div class="ft-icon">⚡</div>
                 <div class="ft-info">
-                  <div class="ft-name">Unit Converter</div>
-                  <div class="ft-sub">Length, Weight, Speed & More</div>
+                  <div class="ft-name">Universal QR Studio</div>
+                  <div class="ft-sub">HD Custom QR Codes</div>
                 </div>
-                <div class="ft-badge blue">FAST ⚡</div>
-              </div>
-
-              <div class="featured-tool-mini" onclick="openTool('tools/stopwatch/index.html')">
-                <div class="ft-icon">⏱️</div>
-                <div class="ft-info">
-                  <div class="ft-name">Stopwatch & Timer</div>
-                  <div class="ft-sub">Precision Laps & Sound Alert</div>
-                </div>
-                <div class="ft-badge purple">PRECISION 🎯</div>
+                <div class="ft-badge purple">STUDIO 🎯</div>
               </div>
             </div>
           </div>
@@ -222,6 +224,7 @@
 
       <div class="cat-filter-pills" id="catFilterPills">
         <button class="filter-pill active" onclick="filterCategory('all', this)">⚡ All Tools</button>
+        <button class="filter-pill" onclick="filterCategory('gaming', this)">🎮 Gaming & PC</button>
         <button class="filter-pill" onclick="filterCategory('finance', this)">💰 Finance</button>
         <button class="filter-pill" onclick="filterCategory('math', this)">🔢 Math & Convert</button>
         <button class="filter-pill" onclick="filterCategory('utility', this)">⏱️ Productivity</button>
@@ -230,12 +233,32 @@
       <!-- Tools Grid -->
       <div class="tools-grid" id="toolsGrid">
 
-        <!-- Tool 1: Wage Saver -->
-        <div class="tool-card" data-category="finance" data-name="wage saver income savings" onclick="openTool('tools/wage-saver/index.html')">
+        <!-- Tool 1: PC & Gaming Optimizer Hub (NEW) -->
+        <div class="tool-card" data-tool-key="pc-optimizer" data-category="gaming" data-name="pc gaming optimizer fps booster ram cleaner" onclick="checkAndOpenTool('pc-optimizer', 'tools/pc-optimizer/index.html')">
+          <div class="card-spotlight"></div>
+          <div class="tool-card-head">
+            <div class="tool-icon-box gaming">🎮</div>
+            <span class="tool-status-badge active" id="badge-pc-optimizer">ONLINE</span>
+          </div>
+          <h3 class="tool-name">PC & Gaming Optimizer Hub</h3>
+          <p class="tool-desc">Windows FPS Boosters, RAM Cache Cleaners සහ Low Ping Optimization Scripts නොමිලේම Download කරගන්න.</p>
+          <div class="tool-meta-tags">
+            <span class="mtag">Gaming</span>
+            <span class="mtag">FPS Boost</span>
+            <span class="mtag">Downloads</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="action-txt">Launch Hub</span>
+            <span class="action-icon">→</span>
+          </div>
+        </div>
+
+        <!-- Tool 2: Wage Saver -->
+        <div class="tool-card" data-tool-key="wage-saver" data-category="finance" data-name="wage saver income savings" onclick="checkAndOpenTool('wage-saver', 'tools/wage-saver/index.html')">
           <div class="card-spotlight"></div>
           <div class="tool-card-head">
             <div class="tool-icon-box finance">💰</div>
-            <span class="tool-status-badge active">ONLINE</span>
+            <span class="tool-status-badge active" id="badge-wage-saver">ONLINE</span>
           </div>
           <h3 class="tool-name">Wage Saver</h3>
           <p class="tool-desc">ඔබේ වැටුප, side income සහ වියදම් LKR වලින් track කර savings goals ජයගන්න.</p>
@@ -250,12 +273,12 @@
           </div>
         </div>
 
-        <!-- Tool 2: Unit Converter -->
-        <div class="tool-card" data-category="math" data-name="unit converter length weight speed" onclick="openTool('tools/unit-converter/index.html')">
+        <!-- Tool 3: Unit Converter -->
+        <div class="tool-card" data-tool-key="unit-converter" data-category="math" data-name="unit converter length weight speed" onclick="checkAndOpenTool('unit-converter', 'tools/unit-converter/index.html')">
           <div class="card-spotlight"></div>
           <div class="tool-card-head">
             <div class="tool-icon-box math">🔢</div>
-            <span class="tool-status-badge active">ONLINE</span>
+            <span class="tool-status-badge active" id="badge-unit-converter">ONLINE</span>
           </div>
           <h3 class="tool-name">Unit Converter</h3>
           <p class="tool-desc">Length, Weight, Temperature, Speed, Data instant convert කරන්න.</p>
@@ -270,12 +293,12 @@
           </div>
         </div>
 
-        <!-- Tool 3: Stopwatch -->
-        <div class="tool-card" data-category="utility" data-name="stopwatch countdown timer time" onclick="openTool('tools/stopwatch/index.html')">
+        <!-- Tool 4: Stopwatch -->
+        <div class="tool-card" data-tool-key="stopwatch" data-category="utility" data-name="stopwatch countdown timer time" onclick="checkAndOpenTool('stopwatch', 'tools/stopwatch/index.html')">
           <div class="card-spotlight"></div>
           <div class="tool-card-head">
             <div class="tool-icon-box utility">⏱️</div>
-            <span class="tool-status-badge active">ONLINE</span>
+            <span class="tool-status-badge active" id="badge-stopwatch">ONLINE</span>
           </div>
           <h3 class="tool-name">Stopwatch & Timer</h3>
           <p class="tool-desc">Precision millisecond stopwatch, lap tracking සහ alarm sound සමඟ countdown timer.</p>
@@ -290,12 +313,12 @@
           </div>
         </div>
 
-        <!-- Tool 4: Color Picker -->
-        <div class="tool-card" data-category="utility" data-name="color picker palette hex rgb" onclick="openTool('tools/color-picker/index.html')">
+        <!-- Tool 5: Color Picker -->
+        <div class="tool-card" data-tool-key="color-picker" data-category="utility" data-name="color picker palette hex rgb" onclick="checkAndOpenTool('color-picker', 'tools/color-picker/index.html')">
           <div class="card-spotlight"></div>
           <div class="tool-card-head">
             <div class="tool-icon-box design">🎨</div>
-            <span class="tool-status-badge active">ONLINE</span>
+            <span class="tool-status-badge active" id="badge-color-picker">ONLINE</span>
           </div>
           <h3 class="tool-name">Color Picker & Palette</h3>
           <p class="tool-desc">HEX, RGB, HSL colors pick කර සුපිරි color palettes සාදා ගන්න.</p>
@@ -310,12 +333,12 @@
           </div>
         </div>
 
-        <!-- Tool 5: Password Generator -->
-        <div class="tool-card" data-category="utility" data-name="password generator security" onclick="openTool('tools/password-generator/index.html')">
+        <!-- Tool 6: Password Generator -->
+        <div class="tool-card" data-tool-key="password-generator" data-category="utility" data-name="password generator security" onclick="checkAndOpenTool('password-generator', 'tools/password-generator/index.html')">
           <div class="card-spotlight"></div>
           <div class="tool-card-head">
             <div class="tool-icon-box security">🔐</div>
-            <span class="tool-status-badge active">ONLINE</span>
+            <span class="tool-status-badge active" id="badge-password-generator">ONLINE</span>
           </div>
           <h3 class="tool-name">Password Generator</h3>
           <p class="tool-desc">Uncrackable strong passwords generate කර ආරක්ෂාව වැඩි කරගන්න.</p>
@@ -330,22 +353,22 @@
           </div>
         </div>
 
-        <!-- Tool 6: QR Code Generator -->
-        <div class="tool-card" data-category="utility" data-name="qr code generator link" onclick="openTool('tools/qr-generator/index.html')">
+        <!-- Tool 7: Universal QR Code Studio -->
+        <div class="tool-card" data-tool-key="qr-generator" data-category="utility" data-name="qr code generator link" onclick="checkAndOpenTool('qr-generator', 'tools/qr-generator/index.html')">
           <div class="card-spotlight"></div>
           <div class="tool-card-head">
             <div class="tool-icon-box qr">⚡</div>
-            <span class="tool-status-badge active">ONLINE</span>
+            <span class="tool-status-badge active" id="badge-qr-generator">ONLINE</span>
           </div>
-          <h3 class="tool-name">QR Code Generator</h3>
-          <p class="tool-desc">ඕනෑම Link එකක් හෝ Text එකක් QR code බවට සැනින් හරවන්න.</p>
+          <h3 class="tool-name">Universal QR Code Studio</h3>
+          <p class="tool-desc">ඕනෑම Link එකක්, Text එකක්, Phone number එකක් හෝ Wi-Fi එකක් සදහා HD QR codes සාදා Download කරන්න.</p>
           <div class="tool-meta-tags">
             <span class="mtag">Utility</span>
-            <span class="mtag">Downloadable</span>
-            <span class="mtag">Fast</span>
+            <span class="mtag">Custom Colors</span>
+            <span class="mtag">HD Download</span>
           </div>
           <div class="tool-card-footer">
-            <span class="action-txt">Launch Tool</span>
+            <span class="action-txt">Launch Studio</span>
             <span class="action-icon">→</span>
           </div>
         </div>
@@ -363,7 +386,7 @@
           <span class="f-sep">•</span>
           <a href="https://wa.me/94760870140" target="_blank" class="f-contact-item">💬 WhatsApp</a>
           <span class="f-sep">•</span>
-          <a href="https://www.linkedin.com" target="_blank" class="f-contact-item linkedin">💼 LinkedIn (Manusha Anuhas)</a>
+          <a href="admin/index.html" class="f-contact-item" style="color:var(--amber);">👑 Owner Control Panel</a>
         </div>
         <p class="footer-copy">Created with ❤️ by <strong>Manusha Anuhas</strong> (Hardware Technician at Wayamba University of Sri Lanka). Published via GitHub Pages.</p>
       </div>

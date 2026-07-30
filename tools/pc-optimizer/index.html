@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC & Gaming Optimizer Hub | Anuhas Tools</title>
+  <meta name="description" content="Download FPS Boosters, RAM Cleaners, Network Tweaks & Windows Optimizers created by Anuhas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../style.css" />
+  <style>
+    .opt-wrap { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; position: relative; z-index: 1; }
+    .opt-head { text-align: center; margin-bottom: 40px; }
+    .opt-badge { display: inline-block; background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.3); border-radius: 999px; padding: 6px 18px; font-size: 0.78rem; font-weight: 800; color: var(--pink); margin-bottom: 14px; }
+    .opt-head h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 900; margin-bottom: 10px; }
+    .opt-head p  { color: var(--text-secondary); font-size: 1.05rem; }
+
+    .opt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+
+    .opt-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 28px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: var(--transition-smooth); position: relative; overflow: hidden;
+    }
+    .opt-card:hover { transform: translateY(-6px); border-color: var(--pink-glow); box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 20px var(--pink-glow); }
+
+    .opt-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .opt-icon { width: 54px; height: 54px; border-radius: 16px; background: rgba(236,72,153,0.1); border: 1px solid rgba(236,72,153,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+    .dl-count-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; color: var(--cyan); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3); border-radius: 999px; padding: 4px 12px; }
+
+    .opt-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
+    .opt-desc  { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px; flex: 1; }
+
+    .opt-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+    .otag { font-size: 0.72rem; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; color: var(--text-muted); }
+
+    .btn-download-script {
+      width: 100%; background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: none; border-radius: var(--radius-sm); padding: 12px;
+      color: white; font-family: inherit; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition-smooth); display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-download-script:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--pink-glow); }
+
+    .status-disabled { display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; border-radius: var(--radius-sm); padding: 12px; font-weight: 700; font-size: 0.88rem; text-align: center; }
+    .opt-card.off .btn-download-script { display: none; }
+    .opt-card.off .status-disabled { display: block; }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <nav class="tool-nav">
+    <a href="../../index.html">🛠️ Anuhas Tools</a>
+    <span class="tool-nav-sep">›</span>
+    <span class="tool-nav-title">🎮 PC & Gaming Optimizer Hub</span>
+  </nav>
+
+  <div class="opt-wrap">
+    <div class="opt-head">
+      <span class="opt-badge">⚡ GAMING & PERFORMANCE TWEAKS</span>
+      <h1>🎮 PC & Gaming Optimizer Hub</h1>
+      <p>Download free, safe & tested Windows Optimization Scripts created by Anuhas</p>
+    </div>
+
+    <div class="opt-grid" id="optimizerGrid">
+
+      <!-- Tool 1: Ultimate FPS Booster -->
+      <div class="opt-card" id="opt-fps-booster">
+        <div>
+          <div class="opt-card-head">
+            <div class="opt-icon">🚀</div>
+            <span class="dl-count-badge" id="dl-count-fps">📥 1,420 Downloads</span>
+          </div>
+          <h3 class="opt-title">Ultimate FPS Booster Script</h3>
+          <p class="opt-desc">Disables unnecessary Windows background services, telemetries, and boosts game process priorities for max FPS.</p>
+          <div class="opt-tags">
+            <span class="otag">.BAT Script</span>
+            <span class="otag">Windows 10/11</span>
+            <span class="otag">Safe</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn-download-script" onclick="downloadOptimizer('fps-booster')">📥 Download Script (.bat)</button>
+          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
+        </div>
+      </div>
+
+      <!-- Tool 2: One-Click RAM Cleaner -->
+      <div class="opt-card" id="opt-ram-cleaner">
+        <div>
+          <div class="opt-card-head">
+            <div class="opt-icon">🧹</div>
+            <span class="dl-count-badge" id="dl-count-ram">📥 980 Downloads</span>
+          </div>
+          <h3 class="opt-title">One-Click RAM Cache Cleaner</h3>
+          <p class="opt-desc">Clears standby RAM memory cache, temporary files and system garbage instantly to free up RAM.</p>
+          <div class="opt-tags">
+            <span class="otag">.BAT Script</span>
+            <span class="otag">RAM Optimizer</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn-download-script" onclick="downloadOptimizer('ram-cleaner')">📥 Download Script (.bat)</button>
+          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
+        </div>
+      </div>
+
+      <!-- Tool 3: Low Ping & Network Latency Fix -->
+      <div class="opt-card" id="opt-net-fix">
+        <div>
+          <div class="opt-card-head">
+            <div class="opt-icon">🌐</div>
+            <span class="dl-count-badge" id="dl-count-net">📥 850 Downloads</span>
+          </div>
+          <h3 class="opt-title">Ping Lowerer & TCP Optimizer</h3>
+          <p class="opt-desc">Tweaks TCP/IP registry settings, flushes DNS, and optimizes network adapter for lowest gaming ping.</p>
+          <div class="opt-tags">
+            <span class="otag">.REG Tweak</span>
+            <span class="otag">Network Fix</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn-download-script" onclick="downloadOptimizer('net-fix')">📥 Download Tweak (.reg)</button>
+          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
+        </div>
+      </div>
+
+      <!-- Tool 4: GPU Low Latency Tweak -->
+      <div class="opt-card" id="opt-gpu-tweak">
+        <div>
+          <div class="opt-card-head">
+            <div class="opt-icon">⚡</div>
+            <span class="dl-count-badge" id="dl-count-gpu">📥 1,110 Downloads</span>
+          </div>
+          <h3 class="opt-title">GPU Low Latency & Input Lag Tweak</h3>
+          <p class="opt-desc">Enables hardware scheduling and reduces graphics driver input latency for fast mouse reaction times.</p>
+          <div class="opt-tags">
+            <span class="otag">.REG Tweak</span>
+            <span class="otag">NVIDIA / AMD</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn-download-script" onclick="downloadOptimizer('gpu-tweak')">📥 Download Tweak (.reg)</button>
+          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const SCRIPTS = {
+      'fps-booster': {
+        name: 'Anuhas_FPS_Booster.bat',
+        content: `@echo off
+title Anuhas Tools - Ultimate FPS Booster
+color 0A
+echo ===================================================
+echo     ANUHAS TOOLS - ULTIMATE FPS BOOSTER 🚀
+echo ===================================================
+echo Disabling Telemetry and Background Services...
+sc config DiagTrack start= disabled
+sc config sysmain start= demand
+echo Cleaning Temp Files...
+del /s /f /q %temp%\\*.*
+del /s /f /q C:\\Windows\\Temp\\*.*
+echo ===================================================
+echo FPS Boost Applied Successfully! Enjoy Gaming!
+echo ===================================================
+pause`
+      },
+      'ram-cleaner': {
+        name: 'Anuhas_RAM_Cleaner.bat',
+        content: `@echo off
+title Anuhas Tools - RAM Cache Cleaner
+color 0B
+echo ===================================================
+echo     ANUHAS TOOLS - ONE-CLICK RAM CLEANER 🧹
+echo ===================================================
+echo Flushing DNS and RAM cache...
+ipconfig /flushdns
+echo Clearing temp cache...
+del /s /f /q %userprofile%\\AppData\\Local\\Temp\\*.*
+echo RAM Cache Cleared!
+pause`
+      },
+      'net-fix': {
+        name: 'Anuhas_Network_Latency_Fix.reg',
+        content: `Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile]
+"NetworkThrottlingIndex"=dword:ffffffff
+"SystemResponsiveness"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games]
+"GPU Priority"=dword:00000008
+"Priority"=dword:00000006
+"Scheduling Category"="High"`
+      },
+      'gpu-tweak': {
+        name: 'Anuhas_GPU_Low_Latency.reg',
+        content: `Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]
+"HwSchMode"=dword:00000002`
+      }
+    };
+
+    const DL_KEY = 'anuhas_dl_counts_v1';
+    let counts = JSON.parse(localStorage.getItem(DL_KEY)) || {
+      'fps-booster': 1420,
+      'ram-cleaner': 980,
+      'net-fix': 850,
+      'gpu-tweak': 1110
+    };
+
+    function renderCounts() {
+      for (const k in counts) {
+        const el = document.getElementById(`dl-count-${k.split('-')[0]}`);
+        if (el) el.textContent = `📥 ${counts[k].toLocaleString()} Downloads`;
+      }
+    }
+
+    function downloadOptimizer(id) {
+      const script = SCRIPTS[id];
+      if (!script) return;
+
+      counts[id] = (counts[id] || 0) + 1;
+      localStorage.setItem(DL_KEY, JSON.stringify(counts));
+      renderCounts();
+
+      const blob = new Blob([script.content], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = script.name;
+      link.click();
+    }
+
+    renderCounts();
+  </script>
+</body>
+</html>

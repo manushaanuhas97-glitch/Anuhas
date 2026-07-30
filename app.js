@@ -1,4 +1,4 @@
-/* app.js — Particles + Interactive Spotlights + Search & Loading */
+/* app.js — Particles + Spotlights + Live Users Ticker + Admin Config Sync */
 
 // ════════════════════════════════════════
 // 1. BACKGROUND PARTICLE CANVAS ENGINE
@@ -57,7 +57,28 @@
 })();
 
 // ════════════════════════════════════════
-// 2. CARD MOUSE SPOTLIGHT EFFECT
+// 2. LIVE VISITORS COUNTER TICKER
+// ════════════════════════════════════════
+(function liveUsersTicker() {
+  let baseUsers = Math.floor(Math.random() * 8) + 16; // 16 - 24 base users
+
+  function updateTicker() {
+    const delta = Math.floor(Math.random() * 5) - 2; // -2 to +2
+    baseUsers = Math.max(12, Math.min(35, baseUsers + delta));
+
+    const tickerEl = document.getElementById('liveUsersCount');
+    const heroEl   = document.getElementById('heroLiveUsers');
+
+    if (tickerEl) tickerEl.textContent = `${baseUsers} Live Users`;
+    if (heroEl)   heroEl.textContent   = `${baseUsers}`;
+  }
+
+  updateTicker();
+  setInterval(updateTicker, 7000);
+})();
+
+// ════════════════════════════════════════
+// 3. CARD MOUSE SPOTLIGHT EFFECT
 // ════════════════════════════════════════
 document.addEventListener('mousemove', (e) => {
   document.querySelectorAll('.tool-card').forEach((card) => {
@@ -70,9 +91,53 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // ════════════════════════════════════════
-// 3. LOADING SEQUENCE
+// 4. ADMIN CONFIG SYNC & MAINTENANCE MODES
+// ════════════════════════════════════════
+const CONFIG_KEY = 'anuhas_admin_config_v1';
+
+function applyAdminConfig() {
+  const config = JSON.parse(localStorage.getItem(CONFIG_KEY)) || {};
+
+  // Check tools status
+  document.querySelectorAll('.tool-card').forEach((card) => {
+    const key = card.getAttribute('data-tool-key');
+    if (!key) return;
+
+    const isEnabled = config[key] !== false;
+    const badge = document.getElementById(`badge-${key}`);
+
+    if (!isEnabled) {
+      card.classList.add('coming-soon');
+      if (badge) {
+        badge.textContent = 'OFF / MAINTENANCE';
+        badge.className = 'tool-status-badge upcoming';
+      }
+    }
+  });
+
+  // Notice banner
+  const banner = document.getElementById('globalNoticeBanner');
+  if (banner && config.notice) {
+    banner.textContent = `📢 ${config.notice}`;
+    banner.classList.remove('hidden');
+  }
+}
+
+function checkAndOpenTool(key, url) {
+  const config = JSON.parse(localStorage.getItem(CONFIG_KEY)) || {};
+  if (config[key] === false) {
+    alert('🛑 මෙම Tool එක හිමිකරු (Manusha) විසින් නඩත්තු කටයුතු (Maintenance) සදහා තාවකාලිකව නවතා ඇත. (Temporarily Disabled by Owner)');
+    return;
+  }
+  window.location.href = url;
+}
+
+// ════════════════════════════════════════
+// 5. LOADING SEQUENCE
 // ════════════════════════════════════════
 function runLoadingSequence() {
+  applyAdminConfig();
+
   const bag         = document.getElementById('bag');
   const brandReveal = document.getElementById('brandReveal');
   const burstItems  = document.querySelectorAll('.burst-item');
@@ -104,7 +169,7 @@ function runLoadingSequence() {
 document.fonts.ready.then(runLoadingSequence);
 
 // ════════════════════════════════════════
-// 4. SEARCH & CATEGORY FILTERING
+// 6. SEARCH & CATEGORY FILTERING
 // ════════════════════════════════════════
 function filterTools() {
   const query = document.getElementById('toolSearchInput').value.toLowerCase().trim();
