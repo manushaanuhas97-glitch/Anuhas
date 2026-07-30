@@ -229,8 +229,15 @@ class AdbOptimizerApp:
         def _bg():
             self.log("Fetching installed packages...\n")
             out = self.run_adb(["shell", "pm", "list", "packages"])
+            
+            # Protected packages (never list or touch Play Store)
+            protected = ["com.android.vending", "com.google.android.gms", "com.google.android.gsf"]
+            
             pkgs = [line.replace("package:", "").strip() for line in out.split('\n') if line.startswith("package:")]
-            self.all_packages = sorted(pkgs)
+            # Filter out Play Store
+            safe_pkgs = [p for p in pkgs if p not in protected]
+            
+            self.all_packages = sorted(safe_pkgs)
             self.root.after(0, lambda: self.filter_packages(None))
         threading.Thread(target=_bg, daemon=True).start()
 
@@ -260,14 +267,16 @@ class AdbOptimizerApp:
             threading.Thread(target=_bg, daemon=True).start()
 
     def uninstall_all_user_apps(self):
-        if not messagebox.askyesno("WARNING", "This will uninstall ALL third-party user apps installed in the emulator. Continue?"):
+        if not messagebox.askyesno("WARNING", "This will uninstall ALL third-party user apps installed in the emulator (Play Store is protected). Continue?"):
             return
 
         def _bg():
             out = self.run_adb(["shell", "pm", "list", "packages", "-3"])
+            protected = ["com.android.vending", "com.google.android.gms", "com.google.android.gsf"]
             user_pkgs = [line.replace("package:", "").strip() for line in out.split('\n') if line.startswith("package:")]
+            safe_pkgs = [p for p in user_pkgs if p not in protected]
             
-            for p in user_pkgs:
+            for p in safe_pkgs:
                 self.log(f"Uninstalling {p}...\n")
                 self.run_adb(["shell", "pm", "uninstall", "--user", "0", p])
 
