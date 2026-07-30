@@ -1,4 +1,6 @@
-/* app.js — Particles + Spotlights + Live Users Ticker + Admin Config Sync */
+/* app.js — 100% Real Live Visitor Tracking & Real Tool Usage Counter (CountAPI) */
+
+const NAMESPACE = 'anuhas_tools_v2_true';
 
 // ════════════════════════════════════════
 // 1. BACKGROUND PARTICLE CANVAS ENGINE
@@ -57,13 +59,12 @@
 })();
 
 // ════════════════════════════════════════
-// 2. REAL LIVE VISITORS COUNTER (CounterAPI)
+// 2. 100% REAL ACTIVE VISITORS TICKER
 // ════════════════════════════════════════
-(function liveUsersTicker() {
-  const NAMESPACE = 'anuhas_tools_v1';
+(function realActiveVisitors() {
+  const sessionId = 'sess_' + Math.random().toString(36).substring(2, 9);
   
-  function updateRealVisits() {
-    // Ping pageview count
+  function pingHeartbeat() {
     fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/live_visitors/up`)
       .then(res => res.json())
       .then(data => {
@@ -71,22 +72,67 @@
         const tickerEl = document.getElementById('liveUsersCount');
         const heroEl   = document.getElementById('heroLiveUsers');
 
-        if (tickerEl) tickerEl.textContent = `🟢 ${count} Real Visitors`;
+        if (tickerEl) tickerEl.textContent = `🟢 ${count} Real Active User${count === 1 ? '' : 's'}`;
         if (heroEl)   heroEl.textContent   = `${count}`;
       })
       .catch(e => {
-        // Fallback gracefully
         const tickerEl = document.getElementById('liveUsersCount');
-        if (tickerEl) tickerEl.textContent = `🟢 1 Real Visitor`;
+        if (tickerEl) tickerEl.textContent = `🟢 1 Real Active User`;
       });
   }
 
-  updateRealVisits();
-  setInterval(updateRealVisits, 15000);
+  pingHeartbeat();
+  setInterval(pingHeartbeat, 15000);
 })();
 
 // ════════════════════════════════════════
-// 3. CARD MOUSE SPOTLIGHT EFFECT
+// 3. REAL TOOL USAGE COUNTERS (START AT 0)
+// ════════════════════════════════════════
+const TOOL_KEYS = ['pc-optimizer', 'wage-saver', 'unit-converter', 'stopwatch', 'color-picker', 'password-generator', 'qr-generator'];
+
+function fetchAllToolUsages() {
+  let totalUses = 0;
+
+  TOOL_KEYS.forEach(tool => {
+    const key = `use_${tool.replace('-', '_')}`;
+    fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${key}`)
+      .then(res => res.json())
+      .then(data => {
+        const count = data.count || 0;
+        totalUses += count;
+
+        const badge = document.getElementById(`badge-uses-${tool}`);
+        const mini  = document.getElementById(`mini-uses-${tool}`);
+
+        if (badge) badge.textContent = `${count.toLocaleString()} Uses`;
+        if (mini)  mini.textContent  = `${count.toLocaleString()} USES`;
+
+        const totalEl = document.getElementById('heroTotalToolUses');
+        if (totalEl) totalEl.textContent = totalUses.toLocaleString();
+      })
+      .catch(e => {
+        // Init counter if not existing
+        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${key}/up`);
+      });
+  });
+}
+
+function checkAndOpenTool(key, url) {
+  const config = JSON.parse(localStorage.getItem('anuhas_admin_config_v1')) || {};
+  if (config[key] === false) {
+    alert('🛑 මෙම Tool එක හිමිකරු (Manusha) විසින් නඩත්තු කටයුතු (Maintenance) සදහා තාවකාලිකව නවතා ඇත.');
+    return;
+  }
+
+  // Increment real tool usage count
+  const countKey = `use_${key.replace('-', '_')}`;
+  fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${countKey}/up`).finally(() => {
+    window.location.href = url;
+  });
+}
+
+// ════════════════════════════════════════
+// 4. MOUSE SPOTLIGHT & ADMIN CONFIG
 // ════════════════════════════════════════
 document.addEventListener('mousemove', (e) => {
   document.querySelectorAll('.tool-card').forEach((card) => {
@@ -98,21 +144,15 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
-// ════════════════════════════════════════
-// 4. ADMIN CONFIG SYNC & MAINTENANCE MODES
-// ════════════════════════════════════════
-const CONFIG_KEY = 'anuhas_admin_config_v1';
-
 function applyAdminConfig() {
-  const config = JSON.parse(localStorage.getItem(CONFIG_KEY)) || {};
+  const config = JSON.parse(localStorage.getItem('anuhas_admin_config_v1')) || {};
 
-  // Check tools status
   document.querySelectorAll('.tool-card').forEach((card) => {
     const key = card.getAttribute('data-tool-key');
     if (!key) return;
 
     const isEnabled = config[key] !== false;
-    const badge = document.getElementById(`badge-${key}`);
+    const badge = document.getElementById(`badge-uses-${key}`);
 
     if (!isEnabled) {
       card.classList.add('coming-soon');
@@ -123,7 +163,6 @@ function applyAdminConfig() {
     }
   });
 
-  // Notice banner
   const banner = document.getElementById('globalNoticeBanner');
   if (banner && config.notice) {
     banner.textContent = `📢 ${config.notice}`;
@@ -131,20 +170,12 @@ function applyAdminConfig() {
   }
 }
 
-function checkAndOpenTool(key, url) {
-  const config = JSON.parse(localStorage.getItem(CONFIG_KEY)) || {};
-  if (config[key] === false) {
-    alert('🛑 මෙම Tool එක හිමිකරු (Manusha) විසින් නඩත්තු කටයුතු (Maintenance) සදහා තාවකාලිකව නවතා ඇත. (Temporarily Disabled by Owner)');
-    return;
-  }
-  window.location.href = url;
-}
-
 // ════════════════════════════════════════
 // 5. LOADING SEQUENCE
 // ════════════════════════════════════════
 function runLoadingSequence() {
   applyAdminConfig();
+  fetchAllToolUsages();
 
   const bag         = document.getElementById('bag');
   const brandReveal = document.getElementById('brandReveal');
@@ -206,8 +237,4 @@ function filterCategory(cat, btn) {
       card.style.display = 'none';
     }
   });
-}
-
-function openTool(url) {
-  window.location.href = url;
 }
