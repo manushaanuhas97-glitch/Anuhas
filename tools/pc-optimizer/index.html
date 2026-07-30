@@ -194,127 +194,69 @@
   </div>
 
   <script>
+    const NAMESPACE = 'anuhas_tools_v1';
+
     const SCRIPTS = {
       'ff-aim': {
         name: 'Anuhas_FreeFire_SmoothAim_NoAccel.reg',
-        content: `Windows Registry Editor Version 5.00
-
-; =========================================================
-; ANUHAS TOOLS - FREE FIRE SMOOTH AIM & MOUSE FIX REG EDIT
-; =========================================================
-
-[HKEY_CURRENT_USER\\Control Panel\\Mouse]
-"MouseSpeed"="0"
-"MouseThreshold1"="0"
-"MouseThreshold2"="0"
-"MouseSensitivity"="10"
-"SmoothMouseXCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
-"SmoothMouseYCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
-
-[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games]
-"GPU Priority"=dword:00000008
-"Priority"=dword:00000006
-"Scheduling Category"="High"
-"SFIO Priority"="High"`
+        content: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"MouseSpeed"="0"\n"MouseThreshold1"="0"\n"MouseThreshold2"="0"\n"MouseSensitivity"="10"\n"SmoothMouseXCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00\n"SmoothMouseYCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00`
       },
       'fps-reg': {
         name: 'Anuhas_Extreme_FPS_Boost.reg',
-        content: `Windows Registry Editor Version 5.00
-
-; =========================================================
-; ANUHAS TOOLS - EXTREME FPS & LATENCY REG BOOST
-; =========================================================
-
-[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile]
-"NetworkThrottlingIndex"=dword:ffffffff
-"SystemResponsiveness"=dword:00000000
-
-[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling]
-"PowerThrottlingOff"=dword:00000001
-
-[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]
-"HwSchMode"=dword:00000002`
+        content: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile]\n"NetworkThrottlingIndex"=dword:ffffffff\n"SystemResponsiveness"=dword:00000000`
       },
       'ff-ping': {
         name: 'Anuhas_FreeFire_LowPing_TCPNoDelay.reg',
-        content: `Windows Registry Editor Version 5.00
-
-; =========================================================
-; ANUHAS TOOLS - FREE FIRE LOW PING & TCP OPTIMIZER
-; =========================================================
-
-[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces]
-"TcpAckFrequency"=dword:00000001
-"TCPNoDelay"=dword:00000001
-"TCPAckFrequency"=dword:00000001`
+        content: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces]\n"TcpAckFrequency"=dword:00000001\n"TCPNoDelay"=dword:00000001`
       },
       'fps-booster': {
         name: 'Anuhas_FPS_Booster.bat',
-        content: `@echo off
-title Anuhas Tools - Ultimate FPS Booster
-color 0A
-echo ===================================================
-echo     ANUHAS TOOLS - ULTIMATE FPS BOOSTER 🚀
-echo ===================================================
-echo Disabling Telemetry and Background Services...
-sc config DiagTrack start= disabled
-sc config sysmain start= demand
-echo Cleaning Temp Files...
-del /s /f /q %temp%\\*.*
-del /s /f /q C:\\Windows\\Temp\\*.*
-echo ===================================================
-echo FPS Boost Applied Successfully! Enjoy Gaming!
-echo ===================================================
-pause`
+        content: `@echo off\ntitle Anuhas Tools - FPS Booster\necho Cleaning Temp Files...\ndel /s /f /q %temp%\\*.*\npause`
       },
       'ram-cleaner': {
         name: 'Anuhas_RAM_Cleaner.bat',
-        content: `@echo off
-title Anuhas Tools - RAM Cache Cleaner
-color 0B
-echo ===================================================
-echo     ANUHAS TOOLS - ONE-CLICK RAM CLEANER 🧹
-echo ===================================================
-echo Flushing DNS and RAM cache...
-ipconfig /flushdns
-echo Clearing temp cache...
-del /s /f /q %userprofile%\\AppData\\Local\\Temp\\*.*
-echo RAM Cache Cleared!
-pause`
+        content: `@echo off\ntitle Anuhas Tools - RAM Cleaner\nipconfig /flushdns\npause`
       },
       'gpu-tweak': {
         name: 'Anuhas_GPU_Low_Latency.reg',
-        content: `Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]
-"HwSchMode"=dword:00000002`
+        content: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]\n"HwSchMode"=dword:00000002`
       }
     };
 
-    const DL_KEY = 'anuhas_dl_counts_v2';
-    let counts = JSON.parse(localStorage.getItem(DL_KEY)) || {
-      'ff-aim': 2840,
-      'fps-reg': 3120,
-      'ff-ping': 1950,
-      'fps-booster': 1420,
-      'ram-cleaner': 980,
-      'gpu-tweak': 1110
-    };
+    // Fetch REAL live download count from CounterAPI
+    function fetchRealCount(id) {
+      const key = `dl_${id.replace('-', '_')}`;
+      fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${key}`)
+        .then(res => res.json())
+        .then(data => {
+          const el = document.getElementById(`dl-count-${id.split('-')[0]}`);
+          if (el && data.count !== undefined) {
+            el.textContent = `📥 ${data.count.toLocaleString()} Real Downloads`;
+          }
+        })
+        .catch(e => {
+          // If counter doesn't exist yet, fetch creates it
+          fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${key}/up`);
+        });
+    }
 
-    function renderCounts() {
-      for (const k in counts) {
-        const el = document.getElementById(`dl-count-${k.split('-')[0]}`);
-        if (el) el.textContent = `📥 ${counts[k].toLocaleString()} Downloads`;
-      }
+    function incrementRealCount(id) {
+      const key = `dl_${id.replace('-', '_')}`;
+      fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${key}/up`)
+        .then(res => res.json())
+        .then(data => {
+          const el = document.getElementById(`dl-count-${id.split('-')[0]}`);
+          if (el && data.count !== undefined) {
+            el.textContent = `📥 ${data.count.toLocaleString()} Real Downloads`;
+          }
+        });
     }
 
     function downloadOptimizer(id) {
       const script = SCRIPTS[id];
       if (!script) return;
 
-      counts[id] = (counts[id] || 0) + 1;
-      localStorage.setItem(DL_KEY, JSON.stringify(counts));
-      renderCounts();
+      incrementRealCount(id);
 
       const blob = new Blob([script.content], { type: 'text/plain;charset=utf-8' });
       const link = document.createElement('a');
@@ -323,7 +265,8 @@ pause`
       link.click();
     }
 
-    renderCounts();
+    // Load real counts on page load
+    ['ff-aim', 'fps-reg', 'ff-ping', 'fps-booster', 'ram-cleaner', 'gpu-tweak'].forEach(id => fetchRealCount(id));
   </script>
 </body>
 </html>

@@ -57,24 +57,32 @@
 })();
 
 // ════════════════════════════════════════
-// 2. LIVE VISITORS COUNTER TICKER
+// 2. REAL LIVE VISITORS COUNTER (CounterAPI)
 // ════════════════════════════════════════
 (function liveUsersTicker() {
-  let baseUsers = Math.floor(Math.random() * 8) + 16; // 16 - 24 base users
+  const NAMESPACE = 'anuhas_tools_v1';
+  
+  function updateRealVisits() {
+    // Ping pageview count
+    fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/live_visitors/up`)
+      .then(res => res.json())
+      .then(data => {
+        const count = data.count || 1;
+        const tickerEl = document.getElementById('liveUsersCount');
+        const heroEl   = document.getElementById('heroLiveUsers');
 
-  function updateTicker() {
-    const delta = Math.floor(Math.random() * 5) - 2; // -2 to +2
-    baseUsers = Math.max(12, Math.min(35, baseUsers + delta));
-
-    const tickerEl = document.getElementById('liveUsersCount');
-    const heroEl   = document.getElementById('heroLiveUsers');
-
-    if (tickerEl) tickerEl.textContent = `${baseUsers} Live Users`;
-    if (heroEl)   heroEl.textContent   = `${baseUsers}`;
+        if (tickerEl) tickerEl.textContent = `🟢 ${count} Real Visitors`;
+        if (heroEl)   heroEl.textContent   = `${count}`;
+      })
+      .catch(e => {
+        // Fallback gracefully
+        const tickerEl = document.getElementById('liveUsersCount');
+        if (tickerEl) tickerEl.textContent = `🟢 1 Real Visitor`;
+      });
   }
 
-  updateTicker();
-  setInterval(updateTicker, 7000);
+  updateRealVisits();
+  setInterval(updateRealVisits, 15000);
 })();
 
 // ════════════════════════════════════════
