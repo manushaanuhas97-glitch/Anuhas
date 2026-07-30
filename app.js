@@ -1,57 +1,96 @@
-/* app.js — Loading animation + main logic */
+/* app.js — Particles + Interactive Spotlights + Search & Loading */
 
 // ════════════════════════════════════════
-// STARS
+// 1. BACKGROUND PARTICLE CANVAS ENGINE
 // ════════════════════════════════════════
-(function createStars() {
-  const container = document.getElementById('stars');
-  if (!container) return;
-  for (let i = 0; i < 120; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const size = Math.random() * 3 + 1;
-    s.style.cssText = `
-      width: ${size}px; height: ${size}px;
-      top: ${Math.random() * 100}%;
-      left: ${Math.random() * 100}%;
-      --dur: ${(Math.random() * 4 + 2).toFixed(1)}s;
-      animation-delay: ${(Math.random() * 4).toFixed(1)}s;
-    `;
-    container.appendChild(s);
+(function initParticles() {
+  const canvas = document.getElementById('bgCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  const particles = [];
+  const particleCount = 45;
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 2 + 1,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.5 + 0.2
+    });
   }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    particles.forEach((p) => {
+      p.x += p.dx;
+      p.y += p.dy;
+
+      if (p.x < 0) p.x = width;
+      if (p.x > width) p.x = 0;
+      if (p.y < 0) p.y = height;
+      if (p.y > height) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(167, 139, 250, ${p.alpha})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#a78bfa';
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
 })();
 
 // ════════════════════════════════════════
-// LOADING SEQUENCE
+// 2. CARD MOUSE SPOTLIGHT EFFECT
+// ════════════════════════════════════════
+document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.tool-card').forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  });
+});
+
+// ════════════════════════════════════════
+// 3. LOADING SEQUENCE
 // ════════════════════════════════════════
 function runLoadingSequence() {
   const bag         = document.getElementById('bag');
-  const toolBurst   = document.getElementById('toolBurst');
   const brandReveal = document.getElementById('brandReveal');
   const burstItems  = document.querySelectorAll('.burst-item');
   const loadScreen  = document.getElementById('loadingScreen');
   const mainSite    = document.getElementById('mainSite');
 
-  // Phase 1 — 800ms: walk & wiggle (already animating via CSS)
+  setTimeout(() => { if (bag) bag.classList.add('opening'); }, 800);
 
-  // Phase 2 — open bag zipper
-  setTimeout(() => {
-    if (bag) bag.classList.add('opening');
-  }, 900);
-
-  // Phase 3 — tools burst out
   setTimeout(() => {
     burstItems.forEach((el, i) => {
       setTimeout(() => el.classList.add('fly'), i * 80);
     });
-  }, 1600);
+  }, 1400);
 
-  // Phase 4 — brand reveal
   setTimeout(() => {
     if (brandReveal) brandReveal.classList.add('show');
-  }, 2000);
+  }, 1900);
 
-  // Phase 5 — loading bar finishes, then transition to main site
   setTimeout(() => {
     if (loadScreen) loadScreen.classList.add('fade-out');
     setTimeout(() => {
@@ -59,28 +98,43 @@ function runLoadingSequence() {
       if (mainSite)   mainSite.classList.remove('hidden');
       document.body.style.overflow = 'auto';
     }, 800);
-  }, 3800);
+  }, 3600);
 }
 
-// Wait for fonts
 document.fonts.ready.then(runLoadingSequence);
 
 // ════════════════════════════════════════
-// OPEN TOOL
+// 4. SEARCH & CATEGORY FILTERING
 // ════════════════════════════════════════
+function filterTools() {
+  const query = document.getElementById('toolSearchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.tool-card');
+
+  cards.forEach((card) => {
+    const name = card.getAttribute('data-name') || '';
+    if (name.includes(query)) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function filterCategory(cat, btn) {
+  document.querySelectorAll('.filter-pill').forEach((p) => p.classList.remove('active'));
+  btn.classList.add('active');
+
+  const cards = document.querySelectorAll('.tool-card');
+  cards.forEach((card) => {
+    const cardCat = card.getAttribute('data-category');
+    if (cat === 'all' || cardCat === cat) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
 function openTool(url) {
   window.location.href = url;
 }
-
-// ════════════════════════════════════════
-// SMOOTH SCROLL for nav links
-// ════════════════════════════════════════
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-});
