@@ -46,9 +46,9 @@
 
       <!-- PIN LOGIN -->
       <div id="pinLoginSection">
-        <p style="font-weight:600;margin-bottom:10px;">Enter Owner Security PIN (Default: 2026):</p>
+        <p style="font-weight:600;margin-bottom:10px;">Enter Owner Security PIN:</p>
         <div class="pin-box">
-          <input type="password" id="pinInput" class="pin-input" placeholder="****" />
+          <input type="password" id="pinInput" class="pin-input" placeholder="Enter PIN..." />
           <button class="btn-pin" onclick="verifyPin()">Unlock Panel 🔑</button>
         </div>
       </div>
@@ -60,6 +60,14 @@
         </div>
 
         <h2 style="font-size:1.1rem;font-weight:800;">🛑 Tools Maintenance Toggles (Turn ON/OFF)</h2>
+
+        <div class="control-row">
+          <div class="control-info">
+            <span class="control-name">🎮 PC & Gaming Optimizer Hub</span>
+            <span class="control-desc">Enable or disable PC Optimizer Downloads</span>
+          </div>
+          <label class="switch"><input type="checkbox" id="toggle-pc-optimizer" checked onchange="saveConfig()" /><span class="slider"></span></label>
+        </div>
 
         <div class="control-row">
           <div class="control-info">
@@ -111,10 +119,18 @@
 
         <div class="control-row">
           <div class="control-info">
-            <span class="control-name">🎮 PC Optimizer Hub</span>
-            <span class="control-desc">Enable or disable PC Optimizer Downloads</span>
+            <span class="control-name">📝 Smart Notes & Todo</span>
+            <span class="control-desc">Enable or disable Smart Notes</span>
           </div>
-          <label class="switch"><input type="checkbox" id="toggle-pc-optimizer" checked onchange="saveConfig()" /><span class="slider"></span></label>
+          <label class="switch"><input type="checkbox" id="toggle-notes" checked onchange="saveConfig()" /><span class="slider"></span></label>
+        </div>
+
+        <div class="control-row">
+          <div class="control-info">
+            <span class="control-name">🧮 Scientific Calculator</span>
+            <span class="control-desc">Enable or disable Scientific Calculator</span>
+          </div>
+          <label class="switch"><input type="checkbox" id="toggle-calculator" checked onchange="saveConfig()" /><span class="slider"></span></label>
         </div>
 
         <h2 style="font-size:1.1rem;font-weight:800;margin-top:20px;">📢 Global Notice Banner Message</h2>
@@ -128,21 +144,22 @@
 
   <script>
     const CONFIG_KEY = 'anuhas_admin_config_v1';
+    const OWNER_PIN = '20070630';
 
     function verifyPin() {
       const pin = document.getElementById('pinInput').value;
-      if (pin === '2026' || pin === '1234') {
+      if (pin === OWNER_PIN) {
         document.getElementById('pinLoginSection').classList.add('hidden');
         document.getElementById('adminControlsSection').classList.remove('hidden');
         loadConfig();
       } else {
-        alert('Invalid Security PIN! (Default is 2026)');
+        alert('Invalid Security PIN!');
       }
     }
 
     function loadConfig() {
       const config = JSON.parse(localStorage.getItem(CONFIG_KEY)) || {};
-      ['wage-saver', 'unit-converter', 'stopwatch', 'color-picker', 'password-generator', 'qr-generator', 'pc-optimizer'].forEach(tool => {
+      ['wage-saver', 'unit-converter', 'stopwatch', 'color-picker', 'password-generator', 'qr-generator', 'pc-optimizer', 'notes', 'calculator'].forEach(tool => {
         const el = document.getElementById(`toggle-${tool}`);
         if (el) el.checked = config[tool] !== false;
       });
@@ -151,7 +168,7 @@
 
     function saveConfig() {
       const config = {};
-      ['wage-saver', 'unit-converter', 'stopwatch', 'color-picker', 'password-generator', 'qr-generator', 'pc-optimizer'].forEach(tool => {
+      ['wage-saver', 'unit-converter', 'stopwatch', 'color-picker', 'password-generator', 'qr-generator', 'pc-optimizer', 'notes', 'calculator'].forEach(tool => {
         const el = document.getElementById(`toggle-${tool}`);
         if (el) config[tool] = el.checked;
       });

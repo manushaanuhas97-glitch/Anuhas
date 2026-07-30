@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scientific Calculator | Anuhas Tools</title>
+  <meta name="description" content="Fast, precision scientific calculator." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../style.css" />
+  <style>
+    .calc-wrap { max-width: 440px; margin: 0 auto; padding: 28px 24px 60px; position: relative; z-index: 1; }
+    .calc-head { text-align: center; margin-bottom: 24px; }
+    .calc-head h1 { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+
+    .calc-panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+    .calc-display { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: right; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--green); word-break: break-all; min-height: 70px; }
+
+    .calc-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .cbtn { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 700; color: white; cursor: pointer; transition: 0.2s ease; }
+    .cbtn:hover { background: rgba(255,255,255,0.12); transform: scale(1.04); }
+    .cbtn.op { background: rgba(147,51,234,0.2); border-color: rgba(147,51,234,0.4); color: var(--purple-light); }
+    .cbtn.eq { background: linear-gradient(135deg, var(--purple), var(--cyan)); border: none; grid-column: span 2; }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <nav class="tool-nav">
+    <a href="../../index.html">🛠️ Anuhas Tools</a>
+    <span class="tool-nav-sep">›</span>
+    <span class="tool-nav-title">🧮 Scientific Calculator</span>
+  </nav>
+
+  <div class="calc-wrap">
+    <div class="calc-head">
+      <h1>🧮 Scientific Calculator</h1>
+    </div>
+
+    <div class="calc-panel">
+      <div class="calc-display" id="calcDisplay">0</div>
+      <div class="calc-btns">
+        <button class="cbtn op" onclick="clearCalc()">C</button>
+        <button class="cbtn op" onclick="press('(')">(</button>
+        <button class="cbtn op" onclick="press(')')">)</button>
+        <button class="cbtn op" onclick="press('/')">/</button>
+
+        <button class="cbtn" onclick="press('7')">7</button>
+        <button class="cbtn" onclick="press('8')">8</button>
+        <button class="cbtn" onclick="press('9')">9</button>
+        <button class="cbtn op" onclick="press('*')">*</button>
+
+        <button class="cbtn" onclick="press('4')">4</button>
+        <button class="cbtn" onclick="press('5')">5</button>
+        <button class="cbtn" onclick="press('6')">6</button>
+        <button class="cbtn op" onclick="press('-')">-</button>
+
+        <button class="cbtn" onclick="press('1')">1</button>
+        <button class="cbtn" onclick="press('2')">2</button>
+        <button class="cbtn" onclick="press('3')">3</button>
+        <button class="cbtn op" onclick="press('+')">+</button>
+
+        <button class="cbtn" onclick="press('0')">0</button>
+        <button class="cbtn" onclick="press('.')">.</button>
+        <button class="cbtn eq" onclick="calcResult()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let expr = '';
+    function press(val) {
+      if (expr === '0') expr = '';
+      expr += val;
+      document.getElementById('calcDisplay').textContent = expr;
+    }
+    function clearCalc() {
+      expr = '0';
+      document.getElementById('calcDisplay').textContent = '0';
+    }
+    function calcResult() {
+      try {
+        const res = eval(expr);
+        expr = String(res);
+        document.getElementById('calcDisplay').textContent = res;
+      } catch(e) {
+        document.getElementById('calcDisplay').textContent = 'Error';
+        expr = '';
+      }
+    }
+  </script>
+</body>
+</html>

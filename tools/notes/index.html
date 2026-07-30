@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Notes & Todo | Anuhas Tools</title>
+  <meta name="description" content="Fast, private notes & task checklist manager." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../style.css" />
+  <style>
+    .nt-wrap { max-width: 800px; margin: 0 auto; padding: 28px 24px 60px; position: relative; z-index: 1; }
+    .nt-head { text-align: center; margin-bottom: 32px; }
+    .nt-head h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; }
+    .nt-head p  { color: var(--text-secondary); }
+
+    .nt-panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 24px; }
+    .nt-form { display: flex; gap: 12px; margin-bottom: 20px; }
+    .nt-input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; color: white; font-family: inherit; font-size: 1rem; outline: none; }
+    .btn-add-note { background: linear-gradient(135deg, var(--purple), var(--cyan)); border: none; border-radius: var(--radius-sm); padding: 14px 24px; color: white; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+    .notes-list { display: flex; flex-direction: column; gap: 12px; }
+    .note-item { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; }
+    .note-text { font-size: 1rem; font-weight: 600; }
+    .note-text.done { text-decoration: line-through; opacity: 0.5; }
+    .btn-del-note { background: none; border: none; color: #ef4444; font-size: 1.1rem; cursor: pointer; opacity: 0.6; transition: 0.2s; }
+    .btn-del-note:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <nav class="tool-nav">
+    <a href="../../index.html">🛠️ Anuhas Tools</a>
+    <span class="tool-nav-sep">›</span>
+    <span class="tool-nav-title">📝 Smart Notes & Todo</span>
+  </nav>
+
+  <div class="nt-wrap">
+    <div class="nt-head">
+      <h1>📝 Smart Notes & Todo Manager</h1>
+      <p>Quickly jot down notes and track your daily tasks privately</p>
+    </div>
+
+    <div class="nt-panel">
+      <form class="nt-form" id="noteForm">
+        <input type="text" id="noteInput" class="nt-input" placeholder="Type a note or task here..." required />
+        <button type="submit" class="btn-add-note">➕ Add Note</button>
+      </form>
+      <div class="notes-list" id="notesList"></div>
+    </div>
+  </div>
+
+  <script>
+    const KEY = 'anuhas_notes_v1';
+    let notes = JSON.parse(localStorage.getItem(KEY)) || [];
+
+    document.getElementById('noteForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const txt = document.getElementById('noteInput').value.trim();
+      if (!txt) return;
+      notes.unshift({ id: Date.now(), text: txt, done: false });
+      localStorage.setItem(KEY, JSON.stringify(notes));
+      document.getElementById('noteInput').value = '';
+      render();
+    });
+
+    function toggleNote(id) {
+      notes = notes.map(n => n.id === id ? { ...n, done: !n.done } : n);
+      localStorage.setItem(KEY, JSON.stringify(notes));
+      render();
+    }
+
+    function deleteNote(id) {
+      notes = notes.filter(n => n.id !== id);
+      localStorage.setItem(KEY, JSON.stringify(notes));
+      render();
+    }
+
+    function render() {
+      const container = document.getElementById('notesList');
+      if (!notes.length) {
+        container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">No notes yet. Add your first task above! 📝</p>';
+        return;
+      }
+      container.innerHTML = notes.map(n => `
+        <div class="note-item">
+          <span class="note-text ${n.done ? 'done' : ''}" onclick="toggleNote(${n.id})" style="cursor:pointer;">${n.text}</span>
+          <button class="btn-del-note" onclick="deleteNote(${n.id})">🗑️</button>
+        </div>
+      `).join('');
+    }
+
+    render();
+  </script>
+</body>
+</html>
