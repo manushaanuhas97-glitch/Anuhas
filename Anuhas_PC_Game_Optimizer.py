@@ -130,7 +130,7 @@ class PcGameOptimizerApp:
         drv_frame = tk.Frame(self.tab_drivers, bg="#080c14")
         drv_frame.pack(fill="both", expand=True, pady=4)
 
-        self.drv_listbox = tk.Listbox(drv_frame, bg="#020617", fg="#f8fafc", font=("Consolas", 9.5), relief="flat")
+        self.drv_listbox = tk.Listbox(drv_frame, bg="#020617", fg="#f8fafc", font=("Consolas", 10), relief="flat")
         scrollbar = ttk.Scrollbar(drv_frame, orient="vertical", command=self.drv_listbox.yview)
         self.drv_listbox.configure(yscrollcommand=scrollbar.set)
 
