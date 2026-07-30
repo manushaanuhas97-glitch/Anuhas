@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://manushaanuhas97-glitch.github.io/anuhas-tools/sitemap.xml
