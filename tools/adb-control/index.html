@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Android Emulator & ADB Control Hub | Anuhas Tools</title>
+  <meta name="description" content="Optimize BlueStacks, LDPlayer, MSI & Android Emulators via ADB commands." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../style.css" />
+  <style>
+    .adb-wrap { max-width: 900px; margin: 0 auto; padding: 30px 24px 70px; position: relative; z-index: 1; }
+    .adb-head { text-align: center; margin-bottom: 32px; }
+    .adb-head h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; background: linear-gradient(135deg, var(--purple-light), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .adb-head p  { color: var(--text-secondary); }
+
+    .emu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-bottom: 36px; }
+    .emu-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; transition: 0.3s ease; }
+    .emu-card:hover { border-color: var(--cyan); transform: translateY(-4px); box-shadow: var(--shadow-purple); }
+    .emu-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+    .emu-tag { font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3); }
+
+    .cmd-box { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--green); margin: 12px 0; overflow-x: auto; white-space: nowrap; }
+
+    .btn-dl-bat { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--purple), var(--cyan)); border: none; border-radius: var(--radius-sm); padding: 10px 18px; color: white; font-weight: 700; cursor: pointer; text-decoration: none; font-size: 0.9rem; transition: 0.2s ease; }
+    .btn-dl-bat:hover { opacity: 0.9; transform: scale(1.02); }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <nav class="tool-nav">
+    <a href="../../index.html">🛠️ Anuhas Tools</a>
+    <span class="tool-nav-sep">›</span>
+    <span class="tool-nav-title">📱 Android Emulator ADB Hub</span>
+  </nav>
+
+  <div class="adb-wrap">
+    <div class="adb-head">
+      <h1>📱 Android Emulator ADB Control & Tweaker Hub</h1>
+      <p>BlueStacks 5, MSI, LDPlayer 9 & Nox Optimizer using automated ADB scripts</p>
+    </div>
+
+    <div class="emu-grid">
+      <!-- Feature 1: Unlock 90/120 FPS Mode -->
+      <div class="emu-card">
+        <div class="emu-title">
+          <span>🚀 Unlock 90/120 FPS Mode</span>
+          <span class="emu-tag">Free Fire Smooth</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Forces the Android Emulator to render at 120 FPS smooth refresh rate.</p>
+        <div class="cmd-box">adb shell setprop debug.sf.fps 120</div>
+        <button class="btn-dl-bat" onclick="downloadAdbScript('unlock_120fps')">📥 Download 120 FPS Script (.bat)</button>
+      </div>
+
+      <!-- Feature 2: Free Fire Smooth Aim & DPI Tweak -->
+      <div class="emu-card">
+        <div class="emu-title">
+          <span>🎯 Smooth Aim DPI Tweak</span>
+          <span class="emu-tag">Mouse Sensitivity</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Sets optimal screen density for zero mouse acceleration and pixel accuracy.</p>
+        <div class="cmd-box">adb shell wm density 320</div>
+        <button class="btn-dl-bat" onclick="downloadAdbScript('dpi_tweak')">📥 Download Aim DPI Script (.bat)</button>
+      </div>
+
+      <!-- Feature 3: Emulator RAM & Cache Trim -->
+      <div class="emu-card">
+        <div class="emu-title">
+          <span>⚡ RAM & Cache Auto Trim</span>
+          <span class="emu-tag">Fix Lag & Freeze</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Flushes system memory and trims background caches to prevent game crashes.</p>
+        <div class="cmd-box">adb shell pm trim-caches 999M</div>
+        <button class="btn-dl-bat" onclick="downloadAdbScript('ram_trim')">📥 Download RAM Trim Script (.bat)</button>
+      </div>
+
+      <!-- Feature 4: High Performance GPU Render -->
+      <div class="emu-card">
+        <div class="emu-title">
+          <span>🎮 Force Hardware GPU Rendering</span>
+          <span class="emu-tag">Graphics Boost</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Forces OpenGLES / Vulkan hardware acceleration for maximum GPU usage.</p>
+        <div class="cmd-box">adb shell setprop debug.egl.hw 1</div>
+        <button class="btn-dl-bat" onclick="downloadAdbScript('gpu_force')">📥 Download GPU Boost Script (.bat)</button>
+      </div>
+
+      <!-- Feature 5: ADB Restart & Connection Repair -->
+      <div class="emu-card">
+        <div class="emu-title">
+          <span>🔄 Restart ADB & Repair Connection</span>
+          <span class="emu-tag">Fix Black Screen</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Kills hanging ADB daemons and reconnects ports 5555 / 5554 cleanly.</p>
+        <div class="cmd-box">adb kill-server && adb start-server</div>
+        <button class="btn-dl-bat" onclick="downloadAdbScript('adb_repair')">📥 Download ADB Repair Script (.bat)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPTS = {
+      'unlock_120fps': {
+        filename: 'Unlock_120FPS_Emulator.bat',
+        code: `@echo off\ntitle Anuhas Tools - ADB 120 FPS Unlocker\necho Connecting to Emulator ADB...\nadb kill-server\nadb start-server\nadb connect 127.0.0.1:5555\nadb shell setprop debug.sf.fps 120\nadb shell setprop persist.vendor.dfps 120\necho 120 FPS Unlocked Successfully!\npause`
+      },
+      'dpi_tweak': {
+        filename: 'FreeFire_Smooth_DPI_Tweak.bat',
+        code: `@echo off\ntitle Anuhas Tools - ADB Smooth Aim DPI Tweak\necho Applying Smooth Aim DPI Tweak...\nadb connect 127.0.0.1:5555\nadb shell wm density 320\nadb shell setprop pointer.speed 7\necho Smooth Aim DPI Tweak Applied!\npause`
+      },
+      'ram_trim': {
+        filename: 'Emulator_RAM_Cache_Trim.bat',
+        code: `@echo off\ntitle Anuhas Tools - ADB RAM & Cache Trim\necho Trimming Emulator Memory & Cache...\nadb connect 127.0.0.1:5555\nadb shell pm trim-caches 999M\nadb shell sync && echo 3 > /proc/sys/vm/drop_caches\necho Memory Cleaned Successfully!\npause`
+      },
+      'gpu_force': {
+        filename: 'Force_GPU_Hardware_Render.bat',
+        code: `@echo off\ntitle Anuhas Tools - Force Hardware GPU Rendering\necho Enabling Hardware Acceleration...\nadb connect 127.0.0.1:5555\nadb shell setprop debug.egl.hw 1\nadb shell setprop debug.composition.type gpu\necho Hardware GPU Acceleration Forced!\npause`
+      },
+      'adb_repair': {
+        filename: 'Restart_ADB_Connection_Fix.bat',
+        code: `@echo off\ntitle Anuhas Tools - ADB Connection Repair\necho Repairing ADB Connection...\nadb kill-server\nadb start-server\nadb connect 127.0.0.1:5555\nadb connect 127.0.0.1:5554\nadb devices\necho Connection Repaired!\npause`
+      }
+    };
+
+    function downloadAdbScript(key) {
+      const item = SCRIPTS[key];
+      if (!item) return;
+      
+      // Increment download counter live
+      fetch('https://api.counterapi.dev/v1/anuhas_tools_v2_true/download_adb_' + key + '/up');
+
+      const blob = new Blob([item.code], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = item.filename;
+      a.click();
+    }
+  </script>
+</body>
+</html>
