@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anuhas Tools</title>
+  <meta name="description" content="Anuhas Tools — A premium collection of handy web tools by Anuhas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════ LOADING SCREEN -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loader-scene">
+
+      <!-- Stars -->
+      <div class="stars" id="stars"></div>
+
+      <!-- Person + Bag Animation -->
+      <div class="character-wrap" id="characterWrap">
+        <!-- Body -->
+        <div class="char-body">
+          <!-- Head -->
+          <div class="char-head">
+            <div class="char-face">
+              <div class="char-eye left"></div>
+              <div class="char-eye right"></div>
+              <div class="char-smile"></div>
+            </div>
+            <div class="char-hair"></div>
+          </div>
+          <!-- Torso -->
+          <div class="char-torso">
+            <div class="char-arm left-arm"></div>
+            <div class="char-arm right-arm bag-arm">
+              <!-- BAG -->
+              <div class="bag" id="bag">
+                <div class="bag-body">
+                  <div class="bag-pocket"></div>
+                  <div class="bag-strap"></div>
+                  <div class="bag-zipper" id="bagZipper">
+                    <div class="zipper-line"></div>
+                    <div class="zipper-pull"></div>
+                  </div>
+                  <!-- Tools flying out -->
+                  <div class="tool-burst" id="toolBurst">
+                    <span class="burst-item b1">💰</span>
+                    <span class="burst-item b2">🔢</span>
+                    <span class="burst-item b3">⏱️</span>
+                    <span class="burst-item b4">🎨</span>
+                    <span class="burst-item b5">🔐</span>
+                    <span class="burst-item b6">⚡</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Legs -->
+          <div class="char-legs">
+            <div class="char-leg left-leg"></div>
+            <div class="char-leg right-leg"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand reveal -->
+      <div class="brand-reveal" id="brandReveal">
+        <div class="brand-icon">🛠️</div>
+        <h1 class="brand-title">
+          <span class="brand-word">Anuhas</span>
+          <span class="brand-word accent">Tools</span>
+        </h1>
+        <p class="brand-sub">ඔබේ premium tools hub</p>
+        <div class="brand-loader">
+          <div class="brand-loader-bar"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ MAIN SITE -->
+  <div id="mainSite" class="main-site hidden">
+
+    <!-- BG Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <span class="nav-icon">🛠️</span>
+        <span class="nav-title">Anuhas <span class="accent">Tools</span></span>
+      </div>
+      <div class="nav-links">
+        <a href="#tools" class="nav-link">Tools</a>
+        <a href="#about" class="nav-link">About</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <div class="hero-badge">✨ Premium Tools Collection</div>
+        <h1 class="hero-title">
+          Welcome to<br/>
+          <span class="gradient-text">Anuhas Tools</span>
+        </h1>
+        <p class="hero-desc">ඔබේ day-to-day tasks easy කරන, beautiful, fast web tools collection එකක්.</p>
+        <div class="hero-btns">
+          <a href="#tools" class="btn-primary">🛠️ Tools බලන්න</a>
+          <a href="#about" class="btn-ghost">About</a>
+        </div>
+        <!-- Floating emojis -->
+        <div class="float-emojis">
+          <span class="fe fe1">💰</span>
+          <span class="fe fe2">🔢</span>
+          <span class="fe fe3">⏱️</span>
+          <span class="fe fe4">🎨</span>
+          <span class="fe fe5">🔐</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <div class="hc hc1">💰 Wage Saver</div>
+          <div class="hc hc2">🔢 Converter</div>
+          <div class="hc hc3">⏱️ Stopwatch</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools-section" id="tools">
+      <div class="section-header">
+        <span class="section-badge">🛠️ All Tools</span>
+        <h2 class="section-title">ඔබේ Tools Collection</h2>
+        <p class="section-sub">Click කරන්න, use කරන්න, enjoy කරන්න!</p>
+      </div>
+
+      <div class="tools-grid" id="toolsGrid">
+
+        <!-- Tool Card: Wage Saver -->
+        <div class="tool-card" onclick="openTool('tools/wage-saver/index.html')" id="card-wage-saver">
+          <div class="tool-card-glow"></div>
+          <div class="tool-icon-wrap">
+            <span class="tool-icon">💰</span>
+          </div>
+          <h3 class="tool-name">Wage Saver</h3>
+          <p class="tool-desc">ඔබේ income, expenses සහ savings goals track කරන්න. LKR support සහිතයි.</p>
+          <div class="tool-tags">
+            <span class="tag">Finance</span>
+            <span class="tag">Tracker</span>
+          </div>
+          <div class="tool-open-btn">Open Tool →</div>
+        </div>
+
+        <!-- Tool Card: Unit Converter -->
+        <div class="tool-card" onclick="openTool('tools/unit-converter/index.html')" id="card-unit-converter">
+          <div class="tool-card-glow"></div>
+          <div class="tool-icon-wrap">
+            <span class="tool-icon">🔢</span>
+          </div>
+          <h3 class="tool-name">Unit Converter</h3>
+          <p class="tool-desc">Length, Weight, Temperature, Speed ​​convert කරන්න — instant results.</p>
+          <div class="tool-tags">
+            <span class="tag">Math</span>
+            <span class="tag">Convert</span>
+          </div>
+          <div class="tool-open-btn">Open Tool →</div>
+        </div>
+
+        <!-- Tool Card: Stopwatch -->
+        <div class="tool-card" onclick="openTool('tools/stopwatch/index.html')" id="card-stopwatch">
+          <div class="tool-card-glow"></div>
+          <div class="tool-icon-wrap">
+            <span class="tool-icon">⏱️</span>
+          </div>
+          <h3 class="tool-name">Stopwatch & Timer</h3>
+          <p class="tool-desc">Precision stopwatch සහ countdown timer — lap tracking සමඟ.</p>
+          <div class="tool-tags">
+            <span class="tag">Time</span>
+            <span class="tag">Productivity</span>
+          </div>
+          <div class="tool-open-btn">Open Tool →</div>
+        </div>
+
+        <!-- Coming Soon -->
+        <div class="tool-card coming-soon" id="card-coming1">
+          <div class="tool-card-glow"></div>
+          <div class="tool-icon-wrap">
+            <span class="tool-icon">🎨</span>
+          </div>
+          <h3 class="tool-name">Color Picker</h3>
+          <p class="tool-desc">HEX, RGB, HSL colors pick කරන්න, palettes හදන්න.</p>
+          <div class="tool-tags">
+            <span class="tag">Design</span>
+            <span class="tag">Coming Soon</span>
+          </div>
+          <div class="tool-open-btn coming">Coming Soon ⏳</div>
+        </div>
+
+        <div class="tool-card coming-soon" id="card-coming2">
+          <div class="tool-card-glow"></div>
+          <div class="tool-icon-wrap">
+            <span class="tool-icon">🔐</span>
+          </div>
+          <h3 class="tool-name">Password Generator</h3>
+          <p class="tool-desc">Strong passwords generate කරන්න, strength check කරන්න.</p>
+          <div class="tool-tags">
+            <span class="tag">Security</span>
+            <span class="tag">Coming Soon</span>
+          </div>
+          <div class="tool-open-btn coming">Coming Soon ⏳</div>
+        </div>
+
+        <div class="tool-card coming-soon" id="card-coming3">
+          <div class="tool-card-glow"></div>
+          <div class="tool-icon-wrap">
+            <span class="tool-icon">⚡</span>
+          </div>
+          <h3 class="tool-name">QR Generator</h3>
+          <p class="tool-desc">Links, text QR codes වලට convert කරන්න instantly.</p>
+          <div class="tool-tags">
+            <span class="tag">Utility</span>
+            <span class="tag">Coming Soon</span>
+          </div>
+          <div class="tool-open-btn coming">Coming Soon ⏳</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="about-section" id="about">
+      <div class="about-card">
+        <div class="about-avatar">👨‍💻</div>
+        <h2 class="about-name">Anuhas</h2>
+        <p class="about-desc">
+          Anuhas Tools — ඔබේ life easy කරන free, beautiful web tools collection එකක්.
+          හැම tool එකක්ම lovingly built ❤️
+        </p>
+        <div class="about-stats">
+          <div class="stat"><strong id="toolCount">3</strong><span>Tools</span></div>
+          <div class="stat"><strong>100%</strong><span>Free</span></div>
+          <div class="stat"><strong>∞</strong><span>More Coming</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Made with ❤️ by <strong>Anuhas</strong> &nbsp;|&nbsp; Anuhas Tools © 2026</p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

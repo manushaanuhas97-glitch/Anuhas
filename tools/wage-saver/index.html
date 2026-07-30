@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wage Saver | Anuhas Tools</title>
+  <meta name="description" content="Income, expenses සහ savings goals track කරන්න — LKR support" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <nav class="tool-nav">
+    <a href="../../index.html">🛠️ Anuhas Tools</a>
+    <span class="tool-nav-sep">›</span>
+    <span class="tool-nav-title">💰 Wage Saver</span>
+  </nav>
+
+  <main class="ws-container">
+    <!-- Summary Cards -->
+    <section class="ws-cards">
+      <div class="ws-card c-income"><div class="wc-icon">💼</div><div><p class="wc-lbl">මුළු ආදායම</p><p class="wc-val" id="totalIncome">රු. 0.00</p></div></div>
+      <div class="ws-card c-expense"><div class="wc-icon">🛒</div><div><p class="wc-lbl">මුළු වියදම්</p><p class="wc-val" id="totalExpenses">රු. 0.00</p></div></div>
+      <div class="ws-card c-save"><div class="wc-icon">🏦</div><div><p class="wc-lbl">ඉතිරි මුදල</p><p class="wc-val" id="totalSavings">රු. 0.00</p></div></div>
+      <div class="ws-card c-goal"><div class="wc-icon">🎯</div><div><p class="wc-lbl">ඉලක්ක ප්‍රගතිය</p><p class="wc-val" id="goalProgress">0%</p></div></div>
+    </section>
+
+    <!-- Goal -->
+    <section class="ws-panel">
+      <div class="ws-panel-hdr">
+        <h2 class="ws-title">🎯 ඉතිරිකිරීම් ඉලක්කය</h2>
+        <button class="btn-sm" id="setGoalBtn">සකසන්න</button>
+      </div>
+      <div id="goalDisplay"><p class="no-data">ඉලක්කයක් සකසා නොමැත. "සකසන්න" click කරන්න.</p></div>
+      <div class="ws-form hidden" id="goalForm">
+        <div class="ws-row">
+          <div class="ws-inp-g"><label>ඉලක්කය (නම)</label><input type="text" id="goalName" placeholder="e.g. Motor Bike" /></div>
+          <div class="ws-inp-g"><label>ඉලක්ක මුදල (රු.)</label><input type="number" id="goalAmount" placeholder="500000" /></div>
+        </div>
+        <div class="ws-actions">
+          <button class="btn-primary" id="saveGoalBtn">ඉලක්කය සුරකින්න</button>
+          <button class="btn-ghost" id="cancelGoalBtn">අවලංගු</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="ws-two-col">
+      <!-- Add Entry -->
+      <section class="ws-panel">
+        <h2 class="ws-title">➕ ගනුදෙනුව එකතු කරන්න</h2>
+        <div class="ws-tabs">
+          <button class="ws-tab active" id="tabIncome" onclick="switchTab('income')">💼 ආදායම</button>
+          <button class="ws-tab" id="tabExpense" onclick="switchTab('expense')">🛒 වියදම</button>
+        </div>
+        <form id="entryForm">
+          <div class="ws-inp-g"><label>විස්තරය</label><input type="text" id="entryDesc" placeholder="e.g. මාසික වැටුප..." required /></div>
+          <div class="ws-row">
+            <div class="ws-inp-g"><label>මුදල (රු.)</label><input type="number" id="entryAmount" placeholder="0.00" min="0" step="0.01" required /></div>
+            <div class="ws-inp-g"><label>දිනය</label><input type="date" id="entryDate" /></div>
+          </div>
+          <div class="ws-inp-g">
+            <label>ප්‍රවර්ගය</label>
+            <select id="entryCategory">
+              <option value="salary">💼 වැටුප</option>
+              <option value="freelance">💻 Freelance</option>
+              <option value="bonus">🎁 Bonus</option>
+              <option value="other-income">💵 වෙනත් ආදායම</option>
+              <option value="food">🍚 ආහාර</option>
+              <option value="transport">🚗 ගමන්</option>
+              <option value="utilities">⚡ Bills</option>
+              <option value="entertainment">🎮 විනෝද</option>
+              <option value="health">🏥 සෞඛ්‍ය</option>
+              <option value="other-exp">📦 වෙනත්</option>
+            </select>
+          </div>
+          <div class="ws-inp-g"><label>සටහන (optional)</label><input type="text" id="entryNote" placeholder="අතිරේක විස්තර..." /></div>
+          <button type="submit" class="btn-primary full-w" id="addBtn">💼 ආදායම එකතු කරන්න</button>
+        </form>
+      </section>
+
+      <!-- Chart -->
+      <section class="ws-panel">
+        <h2 class="ws-title">📊 Overview</h2>
+        <canvas id="myChart" height="200"></canvas>
+        <div class="ws-mini-stats">
+          <div class="mstat"><span class="mdot green-d"></span>ආදායම<strong id="chartIncome">රු.0</strong></div>
+          <div class="mstat"><span class="mdot red-d"></span>වියදම<strong id="chartExpense">රු.0</strong></div>
+          <div class="mstat"><span class="mdot purple-d"></span>ඉතිරිය<strong id="chartSaving">රු.0</strong></div>
+        </div>
+        <div class="rate-box">
+          <p>ඉතිරිකිරීම් අනුපාතය</p>
+          <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
+          <p class="rate-pct" id="rateText">0%</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Transactions -->
+    <section class="ws-panel">
+      <div class="ws-panel-hdr">
+        <h2 class="ws-title">📋 ගනුදෙනු ලැයිස්තුව</h2>
+        <div class="ws-filters">
+          <select id="filterType" onchange="renderTxns()"><option value="all">සියල්ල</option><option value="income">ආදායම</option><option value="expense">වියදම</option></select>
+          <select id="filterMonth" onchange="renderTxns()"><option value="all">සියලු මාස</option></select>
+        </div>
+      </div>
+      <div id="txnList" class="txn-list"><p class="no-data">ගනුදෙනු නොමැත. ↑ ඉහතින් එකතු කරන්න!</p></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <div class="modal-overlay hidden" id="modal">
+    <div class="modal-box">
+      <p class="modal-ttl">🗑️ ගනුදෙනුව මකන්නද?</p>
+      <p class="modal-sub">මෙය ස්ථිරවම මකා දැමෙනු ඇත.</p>
+      <div class="modal-btns">
+        <button class="btn-danger" id="confirmDel">ඔව්, මකන්න</button>
+        <button class="btn-ghost" id="cancelDel">නැත</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

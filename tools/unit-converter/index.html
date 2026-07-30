@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Converter | Anuhas Tools</title>
+  <meta name="description" content="Length, Weight, Temperature, Speed convert කරන්න instantly" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../style.css" />
+  <style>
+    .uc-wrap { max-width: 700px; margin: 0 auto; padding: 28px 24px 60px; position: relative; z-index: 1; }
+    .uc-title { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+    .uc-sub   { color: var(--text-2); margin-bottom: 28px; }
+
+    .cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .cat-tab  {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 999px; padding: 8px 18px;
+      font-family: 'Outfit',sans-serif; font-size: .9rem; font-weight: 600;
+      color: var(--text-2); cursor: pointer; transition: var(--tr);
+    }
+    .cat-tab.active { background: linear-gradient(135deg,var(--purple),var(--cyan)); border-color: transparent; color: #fff; }
+    .cat-tab:not(.active):hover { border-color: var(--purple-l); color: var(--text); }
+
+    .converter-panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 28px; }
+    .conv-title { font-size: 1rem; font-weight: 700; margin-bottom: 20px; }
+
+    .conv-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: end; margin-bottom: 16px; }
+    @media(max-width:500px){ .conv-row { grid-template-columns: 1fr; } .conv-arrow { display: none; } }
+    .conv-col { display: flex; flex-direction: column; gap: 6px; }
+    .conv-col label { font-size: .8rem; color: var(--text-2); font-weight: 500; }
+    .conv-col input, .conv-col select {
+      background: rgba(0,0,0,.3); border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-family: 'Outfit',sans-serif; font-size: 1rem;
+      padding: 12px 14px; outline: none; transition: var(--tr); width: 100%;
+    }
+    .conv-col input:focus, .conv-col select:focus { border-color: rgba(139,92,246,.6); box-shadow: 0 0 0 3px rgba(139,92,246,.15); }
+    .conv-col select option { background: #1a1d2e; }
+    .conv-arrow { font-size: 1.5rem; padding-bottom: 10px; color: var(--purple-l); align-self: end; }
+
+    .result-box {
+      background: linear-gradient(135deg, rgba(139,92,246,.1), rgba(6,182,212,.1));
+      border: 1px solid rgba(139,92,246,.3);
+      border-radius: 14px; padding: 20px; text-align: center; margin-top: 8px;
+    }
+    .result-value { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg,var(--purple-l),var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .result-label { font-size: .9rem; color: var(--text-2); margin-top: 4px; }
+
+    .quick-refs { margin-top: 24px; }
+    .quick-refs h3 { font-size: .9rem; color: var(--text-2); margin-bottom: 12px; font-weight: 600; }
+    .ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+    .ref-card { background: rgba(0,0,0,.2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: .82rem; color: var(--text-2); }
+    .ref-card strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <nav class="tool-nav">
+    <a href="../../index.html">🛠️ Anuhas Tools</a>
+    <span class="tool-nav-sep">›</span>
+    <span class="tool-nav-title">🔢 Unit Converter</span>
+  </nav>
+
+  <div class="uc-wrap">
+    <h1 class="uc-title">🔢 Unit Converter</h1>
+    <p class="uc-sub">Length, Weight, Temperature, Speed — instant convert!</p>
+
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" onclick="setCategory('length')">📏 Length</button>
+      <button class="cat-tab" onclick="setCategory('weight')">⚖️ Weight</button>
+      <button class="cat-tab" onclick="setCategory('temp')">🌡️ Temperature</button>
+      <button class="cat-tab" onclick="setCategory('speed')">💨 Speed</button>
+      <button class="cat-tab" onclick="setCategory('area')">📐 Area</button>
+      <button class="cat-tab" onclick="setCategory('data')">💾 Data</button>
+    </div>
+
+    <div class="converter-panel">
+      <p class="conv-title" id="convTitle">📏 Length Converter</p>
+      <div class="conv-row">
+        <div class="conv-col">
+          <label>From Unit</label>
+          <select id="fromUnit" onchange="convert()"></select>
+          <label style="margin-top:10px">Value</label>
+          <input type="number" id="fromVal" placeholder="0" oninput="convert()" value="1" />
+        </div>
+        <div class="conv-arrow">⇄</div>
+        <div class="conv-col">
+          <label>To Unit</label>
+          <select id="toUnit" onchange="convert()"></select>
+          <label style="margin-top:10px">Result</label>
+          <input type="text" id="toVal" placeholder="—" readonly style="background:rgba(139,92,246,.07);border-color:rgba(139,92,246,.3);" />
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="result-value" id="resultValue">—</div>
+        <div class="result-label" id="resultLabel">Enter a value to convert</div>
+      </div>
+      <div class="quick-refs">
+        <h3>⚡ Quick References</h3>
+        <div class="ref-grid" id="quickRefs"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CATEGORIES = {
+      length: {
+        title: '📏 Length Converter',
+        units: { m:'Meter (m)', km:'Kilometer (km)', cm:'Centimeter (cm)', mm:'Millimeter (mm)', inch:'Inch (in)', ft:'Foot (ft)', yard:'Yard (yd)', mile:'Mile (mi)' },
+        toBase: { m:1, km:1000, cm:0.01, mm:0.001, inch:0.0254, ft:0.3048, yard:0.9144, mile:1609.344 },
+        refs: ['1 km = 1000 m','1 mile = 1.609 km','1 foot = 30.48 cm','1 inch = 2.54 cm','1 yard = 0.914 m']
+      },
+      weight: {
+        title: '⚖️ Weight Converter',
+        units: { kg:'Kilogram (kg)', g:'Gram (g)', mg:'Milligram (mg)', lb:'Pound (lb)', oz:'Ounce (oz)', ton:'Metric Ton (t)' },
+        toBase: { kg:1, g:0.001, mg:0.000001, lb:0.453592, oz:0.0283495, ton:1000 },
+        refs: ['1 kg = 2.205 lb','1 lb = 453.59 g','1 ton = 1000 kg','1 oz = 28.35 g']
+      },
+      temp: {
+        title: '🌡️ Temperature Converter',
+        units: { C:'Celsius (°C)', F:'Fahrenheit (°F)', K:'Kelvin (K)' },
+        toBase: null,
+        refs: ['0°C = 32°F = 273.15K','100°C = 212°F','-40°C = -40°F']
+      },
+      speed: {
+        title: '💨 Speed Converter',
+        units: { mps:'m/s', kph:'km/h', mph:'mph', knot:'Knot', fps:'ft/s' },
+        toBase: { mps:1, kph:0.277778, mph:0.44704, knot:0.514444, fps:0.3048 },
+        refs: ['1 km/h = 0.278 m/s','1 mph = 1.609 km/h','1 knot = 1.852 km/h']
+      },
+      area: {
+        title: '📐 Area Converter',
+        units: { m2:'m²', km2:'km²', cm2:'cm²', ft2:'ft²', acre:'Acre', hectare:'Hectare' },
+        toBase: { m2:1, km2:1e6, cm2:0.0001, ft2:0.092903, acre:4046.86, hectare:10000 },
+        refs: ['1 hectare = 10,000 m²','1 acre = 4046.86 m²','1 km² = 1,000,000 m²']
+      },
+      data: {
+        title: '💾 Data Converter',
+        units: { B:'Byte (B)', KB:'Kilobyte (KB)', MB:'Megabyte (MB)', GB:'Gigabyte (GB)', TB:'Terabyte (TB)' },
+        toBase: { B:1, KB:1024, MB:1048576, GB:1073741824, TB:1099511627776 },
+        refs: ['1 KB = 1024 B','1 MB = 1024 KB','1 GB = 1024 MB','1 TB = 1024 GB']
+      }
+    };
+
+    let currentCat = 'length';
+
+    function setCategory(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-tab').forEach((btn, i) => {
+        btn.classList.toggle('active', Object.keys(CATEGORIES)[i] === cat);
+      });
+      const c = CATEGORIES[cat];
+      document.getElementById('convTitle').textContent = c.title;
+      const fromSel = document.getElementById('fromUnit');
+      const toSel   = document.getElementById('toUnit');
+      const opts = Object.entries(c.units).map(([v,l]) => `<option value="${v}">${l}</option>`).join('');
+      fromSel.innerHTML = opts;
+      toSel.innerHTML   = opts;
+      toSel.selectedIndex = 1;
+      document.getElementById('quickRefs').innerHTML = (c.refs || []).map(r => `<div class="ref-card"><strong>${r.split('=')[0]}</strong>= ${r.split('=').slice(1).join('=')}</div>`).join('');
+      convert();
+    }
+
+    function convert() {
+      const val  = parseFloat(document.getElementById('fromVal').value);
+      const from = document.getElementById('fromUnit').value;
+      const to   = document.getElementById('toUnit').value;
+      const c    = CATEGORIES[currentCat];
+      let result;
+
+      if (isNaN(val)) { document.getElementById('resultValue').textContent = '—'; document.getElementById('toVal').value = ''; return; }
+
+      if (currentCat === 'temp') {
+        let celsius;
+        if (from === 'C') celsius = val;
+        else if (from === 'F') celsius = (val - 32) * 5/9;
+        else celsius = val - 273.15;
+        if (to === 'C') result = celsius;
+        else if (to === 'F') result = celsius * 9/5 + 32;
+        else result = celsius + 273.15;
+      } else {
+        const base = val * c.toBase[from];
+        result = base / c.toBase[to];
+      }
+
+      const fmt = result.toPrecision(7).replace(/\.?0+$/, '');
+      document.getElementById('toVal').value      = fmt;
+      document.getElementById('resultValue').textContent = fmt;
+      document.getElementById('resultLabel').textContent  = `${val} ${c.units[from]} = ${fmt} ${c.units[to]}`;
+    }
+
+    setCategory('length');
+  </script>
+</body>
+</html>
