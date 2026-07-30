@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Picker & Palette | Anuhas Tools</title>
+  <meta name="description" content="HEX, RGB, HSL color picker & palette generator" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../style.css" />
+  <style>
+    .cp-wrap { max-width: 800px; margin: 0 auto; padding: 28px 24px 60px; position: relative; z-index: 1; }
+    .cp-head { text-align: center; margin-bottom: 32px; }
+    .cp-head h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; }
+    .cp-head p  { color: var(--text-secondary); }
+
+    .cp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media(max-width:700px){ .cp-grid { grid-template-columns: 1fr; } }
+
+    .cp-panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .cp-panel-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; }
+
+    /* Picker Preview */
+    .color-preview-box {
+      height: 160px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+      transition: background-color 0.2s ease;
+      position: relative; margin-bottom: 20px;
+    }
+    .color-input-hidden { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+
+    .color-formats { display: flex; flex-direction: column; gap: 12px; }
+    .format-row { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 16px; }
+    .format-lbl { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); }
+    .format-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.95rem; }
+    .btn-copy-mini { background: rgba(255,255,255,0.08); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; color: var(--text-primary); font-family: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: var(--transition-fast); }
+    .btn-copy-mini:hover { background: var(--purple); border-color: transparent; }
+
+    /* Palette Generator */
+    .palette-swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; height: 120px; margin-bottom: 20px; }
+    .swatch { border-radius: var(--radius-sm); display: flex; align-items: flex-end; justify-content: center; padding: 8px; cursor: pointer; transition: var(--transition-smooth); position: relative; }
+    .swatch:hover { transform: translateY(-4px) scale(1.04); }
+    .swatch-code { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px; }
+
+    .btn-gen-palette { width: 100%; background: linear-gradient(135deg, var(--pink), var(--purple)); border: none; border-radius: var(--radius-sm); padding: 14px; color: white; font-family: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); box-shadow: 0 4px 20px var(--pink-glow); }
+    .btn-gen-palette:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--pink-glow); }
+
+    .toast { position: fixed; bottom: 30px; right: 30px; background: rgba(15,23,42,0.9); border: 1px solid var(--border-bright); backdrop-filter: blur(16px); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; transform: translateY(60px); opacity: 0; transition: all 0.3s ease; pointer-events: none; z-index: 999; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <nav class="tool-nav">
+    <a href="../../index.html">🛠️ Anuhas Tools</a>
+    <span class="tool-nav-sep">›</span>
+    <span class="tool-nav-title">🎨 Color Picker & Palette</span>
+  </nav>
+
+  <div class="cp-wrap">
+    <div class="cp-head">
+      <h1>🎨 Color Picker & Palette</h1>
+      <p>Pick colors, extract HEX/RGB/HSL codes, and generate beautiful palettes</p>
+    </div>
+
+    <div class="cp-grid">
+      <!-- Color Picker Panel -->
+      <div class="cp-panel">
+        <h2 class="cp-panel-title">🖌️ Color Selector</h2>
+        <div class="color-preview-box" id="colorPreview" style="background-color: #9333ea;">
+          <input type="color" id="nativeColorInput" class="color-input-hidden" value="#9333ea" oninput="updateColor(this.value)" />
+          <span style="background:rgba(0,0,0,0.5);padding:6px 16px;border-radius:999px;font-size:0.85rem;font-weight:700;">Click to Pick Color 🎨</span>
+        </div>
+
+        <div class="color-formats">
+          <div class="format-row">
+            <span class="format-lbl">HEX</span>
+            <span class="format-val" id="hexVal">#9333ea</span>
+            <button class="btn-copy-mini" onclick="copyText(document.getElementById('hexVal').textContent)">Copy</button>
+          </div>
+          <div class="format-row">
+            <span class="format-lbl">RGB</span>
+            <span class="format-val" id="rgbVal">rgb(147, 51, 234)</span>
+            <button class="btn-copy-mini" onclick="copyText(document.getElementById('rgbVal').textContent)">Copy</button>
+          </div>
+          <div class="format-row">
+            <span class="format-lbl">HSL</span>
+            <span class="format-val" id="hslVal">hsl(271, 81%, 56%)</span>
+            <button class="btn-copy-mini" onclick="copyText(document.getElementById('hslVal').textContent)">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Palette Generator Panel -->
+      <div class="cp-panel">
+        <h2 class="cp-panel-title">✨ Random Palette Generator</h2>
+        <div class="palette-swatches" id="paletteSwatches"></div>
+        <button class="btn-gen-palette" onclick="generateRandomPalette()">🎲 Generate New Palette</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function hexToRgb(hex) {
+      let c = hex.substring(1);
+      let rgb = parseInt(c, 16);
+      let r = (rgb >> 16) & 255;
+      let g = (rgb >> 8) & 255;
+      let b = rgb & 255;
+      return { r, g, b };
+    }
+
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      let max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        let d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+      }
+      return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+    }
+
+    function updateColor(hex) {
+      document.getElementById('colorPreview').style.backgroundColor = hex;
+      document.getElementById('hexVal').textContent = hex;
+
+      const { r, g, b } = hexToRgb(hex);
+      document.getElementById('rgbVal').textContent = `rgb(${r}, ${g}, ${b})`;
+
+      const { h, s, l } = rgbToHsl(r, g, b);
+      document.getElementById('hslVal').textContent = `hsl(${h}, ${s}%, ${l}%)`;
+    }
+
+    function generateRandomPalette() {
+      const container = document.getElementById('paletteSwatches');
+      container.innerHTML = '';
+      for (let i = 0; i < 5; i++) {
+        const randomHex = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch';
+        swatch.style.backgroundColor = randomHex;
+        swatch.onclick = () => copyText(randomHex);
+        swatch.innerHTML = `<span class="swatch-code">${randomHex}</span>`;
+        container.appendChild(swatch);
+      }
+    }
+
+    function copyText(txt) {
+      navigator.clipboard.writeText(txt);
+      const toast = document.getElementById('toast');
+      toast.textContent = `Copied ${txt} to clipboard! 📋`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    generateRandomPalette();
+  </script>
+</body>
+</html>
