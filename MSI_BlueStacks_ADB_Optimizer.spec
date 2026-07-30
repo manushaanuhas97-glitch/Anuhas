@@ -5,7 +5,7 @@ a = Analysis(
     ['MSI_BlueStacks_ADB_Optimizer.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('adb.exe', '.'), ('AdbWinApi.dll', '.'), ('AdbWinUsbApi.dll', '.'), ('app_icon.ico', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

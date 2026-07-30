@@ -4,10 +4,26 @@ import subprocess
 import os
 import threading
 import sys
+import re
 
 # =========================================================================
 # ANUHAS TOOLS — MSI & BLUESTACKS ADB EMULATOR OPTIMIZER & DEBLOATER (.EXE)
 # =========================================================================
+
+def get_adb_binary_path():
+    # Check bundled PyInstaller sys._MEIPASS or script directory
+    base_dir = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    local_adb = os.path.join(base_dir, 'adb.exe')
+    if os.path.exists(local_adb):
+        return local_adb
+    
+    # Check script directory fallback
+    local_adb_alt = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'adb.exe')
+    if os.path.exists(local_adb_alt):
+        return local_adb_alt
+
+    # Fallback to system path
+    return 'adb'
 
 class AdbOptimizerApp:
     def __init__(self, root):
@@ -17,9 +33,12 @@ class AdbOptimizerApp:
         self.root.minsize(700, 650)
         self.root.configure(bg="#090d16")
 
+        self.adb_bin = get_adb_binary_path()
+
         # Set Icon
         try:
-            ico_path = os.path.join(os.path.dirname(__file__), "app_icon.ico")
+            base_dir = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+            ico_path = os.path.join(base_dir, "app_icon.ico")
             if os.path.exists(ico_path):
                 self.root.iconbitmap(ico_path)
         except Exception:
@@ -139,7 +158,7 @@ class AdbOptimizerApp:
     # ================= ADB COMMAND EXECUTION =================
     def run_adb(self, cmd_args):
         try:
-            full_cmd = ["adb"] + (["-s", self.device_id] if self.device_id else []) + cmd_args
+            full_cmd = [self.adb_bin] + (["-s", self.device_id] if self.device_id else []) + cmd_args
             p = subprocess.run(full_cmd, capture_output=True, text=True, timeout=8)
             output = p.stdout.strip() or p.stderr.strip()
             self.log(f"> adb {' '.join(cmd_args)}\n{output}\n")
@@ -152,21 +171,45 @@ class AdbOptimizerApp:
         self.log_txt.insert(tk.END, text)
         self.log_txt.see(tk.END)
 
+    def detect_bluestacks_ports(self):
+        # Scan BlueStacks 5 & MSI App Player configuration files for custom ADB ports
+        detected_ports = []
+        conf_paths = [
+            r"C:\ProgramData\BlueStacks_nxt\bluestacks.conf",
+            r"C:\ProgramData\MSI App Player\bluestacks.conf",
+            r"C:\ProgramData\BlueStacks\bluestacks.conf"
+        ]
+        for cp in conf_paths:
+            if os.path.exists(cp):
+                try:
+                    with open(cp, 'r', errors='ignore') as f:
+                        content = f.read()
+                        ports = re.findall(r'adb_port="(\d+)"', content)
+                        for port in ports:
+                            detected_ports.append(f"127.0.0.1:{port}")
+                except Exception: pass
+        return detected_ports
+
     def auto_connect_adb(self):
         def _bg():
-            self.log("Connecting to ADB ports (127.0.0.1:5555, 5554, 62001)...\n")
-            ports = ["127.0.0.1:5555", "127.0.0.1:5554", "127.0.0.1:62001", "127.0.0.1:5556"]
+            self.log("Initializing ADB Server & Scanning Emulator Ports...\n")
+            subprocess.run([self.adb_bin, "start-server"], capture_output=True)
+
+            ports = self.detect_bluestacks_ports()
+            ports.extend(["127.0.0.1:5555", "127.0.0.1:5554", "127.0.0.1:5565", "127.0.0.1:5575", "127.0.0.1:62001", "127.0.0.1:5556"])
             
-            subprocess.run(["adb", "start-server"], capture_output=True)
+            # Remove duplicates preserving order
+            seen = set()
+            unique_ports = [x for x in ports if not (x in seen or seen.add(x))]
 
             connected_dev = None
-            for p in ports:
-                res = subprocess.run(["adb", "connect", p], capture_output=True, text=True)
+            for p in unique_ports:
+                res = subprocess.run([self.adb_bin, "connect", p], capture_output=True, text=True)
                 if "connected" in res.stdout.lower() or "already" in res.stdout.lower():
                     connected_dev = p
                     break
 
-            dev_res = subprocess.run(["adb", "devices"], capture_output=True, text=True)
+            dev_res = subprocess.run([self.adb_bin, "devices"], capture_output=True, text=True)
             lines = [l.split()[0] for l in dev_res.stdout.strip().split('\n')[1:] if "device" in l]
 
             if lines:
@@ -176,8 +219,8 @@ class AdbOptimizerApp:
                 self.load_installed_packages()
             else:
                 self.device_id = None
-                self.status_lbl.config(text="🔴 ADB Not Connected (Launch BlueStacks/MSI & Enable ADB)", fg="#ef4444")
-                self.log("⚠️ No ADB device detected. Make sure ADB is enabled in Emulator settings.\n")
+                self.status_lbl.config(text="🔴 ADB Not Connected (Make sure ADB is ON in Emulator Settings)", fg="#ef4444")
+                self.log("⚠️ No ADB device detected. Make sure ADB is turned ON in BlueStacks/MSI Settings.\n")
 
         threading.Thread(target=_bg, daemon=True).start()
 
