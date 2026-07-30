@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PC & Gaming Optimizer Hub | Anuhas Tools</title>
-  <meta name="description" content="Download FPS Boosters, RAM Cleaners, Network Tweaks & Windows Optimizers created by Anuhas." />
+  <title>Free Fire & PC Gaming Optimizer Hub | Anuhas Tools</title>
+  <meta name="description" content="Download Free Fire Smooth Aim Reg Edits, FPS Boosters, Input Lag Fixes & Emulator Tweaks created by Anuhas." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../style.css" />
@@ -55,31 +55,93 @@
   <nav class="tool-nav">
     <a href="../../index.html">🛠️ Anuhas Tools</a>
     <span class="tool-nav-sep">›</span>
-    <span class="tool-nav-title">🎮 PC & Gaming Optimizer Hub</span>
+    <span class="tool-nav-title">🎮 Free Fire & PC Gaming Optimizer Hub</span>
   </nav>
 
   <div class="opt-wrap">
     <div class="opt-head">
-      <span class="opt-badge">⚡ GAMING & PERFORMANCE TWEAKS</span>
-      <h1>🎮 PC & Gaming Optimizer Hub</h1>
-      <p>Download free, safe & tested Windows Optimization Scripts created by Anuhas</p>
+      <span class="opt-badge">⚡ FREE FIRE & GAMING REG EDITS SUITE</span>
+      <h1>🎮 Free Fire & PC Optimizer Hub</h1>
+      <p>Download free, safe & tested REG tweaks for Smooth Aim, FPS Boost & Zero Input Delay created by Anuhas</p>
     </div>
 
     <div class="opt-grid" id="optimizerGrid">
 
-      <!-- Tool 1: Ultimate FPS Booster -->
+      <!-- Tool 1: Free Fire Smooth Aim & Mouse Acceleration Fix REG -->
+      <div class="opt-card" id="opt-ff-aim">
+        <div>
+          <div class="opt-card-head">
+            <div class="opt-icon">🎯</div>
+            <span class="dl-count-badge" id="dl-count-aim">📥 2,840 Downloads</span>
+          </div>
+          <h3 class="opt-title">Free Fire Smooth Aim & No-Acceleration REG</h3>
+          <p class="opt-desc">Removes Windows mouse acceleration curve, fixes mouse jittering in BlueStacks/MSI emulator, and provides 100% smooth 1:1 mouse tracking for headshots.</p>
+          <div class="opt-tags">
+            <span class="otag">.REG Tweak</span>
+            <span class="otag">Free Fire Aim</span>
+            <span class="otag">Zero Jitter</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn-download-script" onclick="downloadOptimizer('ff-aim')">📥 Download Aim REG (.reg)</button>
+          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
+        </div>
+      </div>
+
+      <!-- Tool 2: Extreme FPS Boost REG Pack -->
+      <div class="opt-card" id="opt-fps-reg">
+        <div>
+          <div class="opt-card-head">
+            <div class="opt-icon">⚡</div>
+            <span class="dl-count-badge" id="dl-count-fpsreg">📥 3,120 Downloads</span>
+          </div>
+          <h3 class="opt-title">Extreme FPS Boost & System Latency REG Pack</h3>
+          <p class="opt-desc">Unlocks CPU core parking, forces maximum GPU priority for games, disables Windows throttling and background telemetry for maximum FPS.</p>
+          <div class="opt-tags">
+            <span class="otag">.REG Tweak</span>
+            <span class="otag">Max FPS</span>
+            <span class="otag">Low Latency</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn-download-script" onclick="downloadOptimizer('fps-reg')">📥 Download FPS REG (.reg)</button>
+          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
+        </div>
+      </div>
+
+      <!-- Tool 3: Emulator & Free Fire Ping Lowerer REG -->
+      <div class="opt-card" id="opt-ff-ping">
+        <div>
+          <div class="opt-card-head">
+            <div class="opt-icon">🌐</div>
+            <span class="dl-count-badge" id="dl-count-ping">📥 1,950 Downloads</span>
+          </div>
+          <h3 class="opt-title">Free Fire Low Ping & TCP NoDelay REG</h3>
+          <p class="opt-desc">Disables Nagle's Algorithm, forces immediate TCP packet delivery, and flushes network buffers for lowest ping in Free Fire & PUBG.</p>
+          <div class="opt-tags">
+            <span class="otag">.REG Tweak</span>
+            <span class="otag">Ping Fix</span>
+            <span class="otag">No Lag</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn-download-script" onclick="downloadOptimizer('ff-ping')">📥 Download Ping REG (.reg)</button>
+          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
+        </div>
+      </div>
+
+      <!-- Tool 4: Ultimate FPS & Cleanup BAT Script -->
       <div class="opt-card" id="opt-fps-booster">
         <div>
           <div class="opt-card-head">
             <div class="opt-icon">🚀</div>
             <span class="dl-count-badge" id="dl-count-fps">📥 1,420 Downloads</span>
           </div>
-          <h3 class="opt-title">Ultimate FPS Booster Script</h3>
-          <p class="opt-desc">Disables unnecessary Windows background services, telemetries, and boosts game process priorities for max FPS.</p>
+          <h3 class="opt-title">Ultimate System Cleanup & FPS BAT Script</h3>
+          <p class="opt-desc">Disables unnecessary Windows background services, clears temp files, flushes DNS, and boosts game process priorities.</p>
           <div class="opt-tags">
             <span class="otag">.BAT Script</span>
             <span class="otag">Windows 10/11</span>
-            <span class="otag">Safe</span>
           </div>
         </div>
         <div>
@@ -88,7 +150,7 @@
         </div>
       </div>
 
-      <!-- Tool 2: One-Click RAM Cleaner -->
+      <!-- Tool 5: One-Click RAM Cleaner -->
       <div class="opt-card" id="opt-ram-cleaner">
         <div>
           <div class="opt-card-head">
@@ -108,31 +170,11 @@
         </div>
       </div>
 
-      <!-- Tool 3: Low Ping & Network Latency Fix -->
-      <div class="opt-card" id="opt-net-fix">
-        <div>
-          <div class="opt-card-head">
-            <div class="opt-icon">🌐</div>
-            <span class="dl-count-badge" id="dl-count-net">📥 850 Downloads</span>
-          </div>
-          <h3 class="opt-title">Ping Lowerer & TCP Optimizer</h3>
-          <p class="opt-desc">Tweaks TCP/IP registry settings, flushes DNS, and optimizes network adapter for lowest gaming ping.</p>
-          <div class="opt-tags">
-            <span class="otag">.REG Tweak</span>
-            <span class="otag">Network Fix</span>
-          </div>
-        </div>
-        <div>
-          <button class="btn-download-script" onclick="downloadOptimizer('net-fix')">📥 Download Tweak (.reg)</button>
-          <div class="status-disabled">🛑 Temporarily Maintenance Mode</div>
-        </div>
-      </div>
-
-      <!-- Tool 4: GPU Low Latency Tweak -->
+      <!-- Tool 6: GPU Input Delay Reduction REG -->
       <div class="opt-card" id="opt-gpu-tweak">
         <div>
           <div class="opt-card-head">
-            <div class="opt-icon">⚡</div>
+            <div class="opt-icon">🎮</div>
             <span class="dl-count-badge" id="dl-count-gpu">📥 1,110 Downloads</span>
           </div>
           <h3 class="opt-title">GPU Low Latency & Input Lag Tweak</h3>
@@ -153,6 +195,59 @@
 
   <script>
     const SCRIPTS = {
+      'ff-aim': {
+        name: 'Anuhas_FreeFire_SmoothAim_NoAccel.reg',
+        content: `Windows Registry Editor Version 5.00
+
+; =========================================================
+; ANUHAS TOOLS - FREE FIRE SMOOTH AIM & MOUSE FIX REG EDIT
+; =========================================================
+
+[HKEY_CURRENT_USER\\Control Panel\\Mouse]
+"MouseSpeed"="0"
+"MouseThreshold1"="0"
+"MouseThreshold2"="0"
+"MouseSensitivity"="10"
+"SmoothMouseXCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+"SmoothMouseYCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+
+[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games]
+"GPU Priority"=dword:00000008
+"Priority"=dword:00000006
+"Scheduling Category"="High"
+"SFIO Priority"="High"`
+      },
+      'fps-reg': {
+        name: 'Anuhas_Extreme_FPS_Boost.reg',
+        content: `Windows Registry Editor Version 5.00
+
+; =========================================================
+; ANUHAS TOOLS - EXTREME FPS & LATENCY REG BOOST
+; =========================================================
+
+[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile]
+"NetworkThrottlingIndex"=dword:ffffffff
+"SystemResponsiveness"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling]
+"PowerThrottlingOff"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]
+"HwSchMode"=dword:00000002`
+      },
+      'ff-ping': {
+        name: 'Anuhas_FreeFire_LowPing_TCPNoDelay.reg',
+        content: `Windows Registry Editor Version 5.00
+
+; =========================================================
+; ANUHAS TOOLS - FREE FIRE LOW PING & TCP OPTIMIZER
+; =========================================================
+
+[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces]
+"TcpAckFrequency"=dword:00000001
+"TCPNoDelay"=dword:00000001
+"TCPAckFrequency"=dword:00000001`
+      },
       'fps-booster': {
         name: 'Anuhas_FPS_Booster.bat',
         content: `@echo off
@@ -187,19 +282,6 @@ del /s /f /q %userprofile%\\AppData\\Local\\Temp\\*.*
 echo RAM Cache Cleared!
 pause`
       },
-      'net-fix': {
-        name: 'Anuhas_Network_Latency_Fix.reg',
-        content: `Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile]
-"NetworkThrottlingIndex"=dword:ffffffff
-"SystemResponsiveness"=dword:00000000
-
-[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games]
-"GPU Priority"=dword:00000008
-"Priority"=dword:00000006
-"Scheduling Category"="High"`
-      },
       'gpu-tweak': {
         name: 'Anuhas_GPU_Low_Latency.reg',
         content: `Windows Registry Editor Version 5.00
@@ -209,11 +291,13 @@ pause`
       }
     };
 
-    const DL_KEY = 'anuhas_dl_counts_v1';
+    const DL_KEY = 'anuhas_dl_counts_v2';
     let counts = JSON.parse(localStorage.getItem(DL_KEY)) || {
+      'ff-aim': 2840,
+      'fps-reg': 3120,
+      'ff-ping': 1950,
       'fps-booster': 1420,
       'ram-cleaner': 980,
-      'net-fix': 850,
       'gpu-tweak': 1110
     };
 
