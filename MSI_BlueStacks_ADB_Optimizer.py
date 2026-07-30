@@ -26,6 +26,7 @@ class AdbOptimizerApp:
             pass
 
         self.device_id = None
+        self.all_packages = []
         self.create_ui()
         self.auto_connect_adb()
 
@@ -69,19 +70,19 @@ class AdbOptimizerApp:
         log_frame = tk.LabelFrame(self.root, text=" 📜 ADB Command Output Log ", font=("Segoe UI", 9, "bold"), fg="#38bdf8", bg="#090d16", padx=10, pady=5)
         log_frame.pack(fill="x", padx=15, pady=(5, 12))
 
-        self.log_txt = tk.Text(log_frame, height=6, bg="#020617", fg="#4ade80", font=("Consolas", 9.5), relief="flat")
+        self.log_txt = tk.Text(log_frame, height=6, bg="#020617", fg="#4ade80", font=("Consolas", 10), relief="flat")
         self.log_txt.pack(fill="both", expand=True)
 
     def build_app_manager_tab(self):
-        lbl_info = tk.Label(self.tab_apps, text="Installed Packages in Emulator (Select an app to uninstall individually or uninstall all non-system apps):", font=("Segoe UI", 9.5), fg="#cbd5e1", bg="#090d16", justify="left")
+        lbl_info = tk.Label(self.tab_apps, text="Installed Packages in Emulator (Select an app to uninstall individually or uninstall all non-system apps):", font=("Segoe UI", 10), fg="#cbd5e1", bg="#090d16", justify="left")
         lbl_info.pack(anchor="w", pady=(0, 6))
 
         # Filter & Search Box
         filter_frame = tk.Frame(self.tab_apps, bg="#090d16")
         filter_frame.pack(fill="x", pady=4)
 
-        tk.Label(filter_frame, text="🔍 Filter:", font=("Segoe UI", 9.5, "bold"), fg="#94a3b8", bg="#090d16").pack(side="left")
-        self.search_entry = tk.Entry(filter_frame, font=("Segoe UI", 9.5), bg="#1e293b", fg="white", insertbackground="white")
+        tk.Label(filter_frame, text="🔍 Filter:", font=("Segoe UI", 10, "bold"), fg="#94a3b8", bg="#090d16").pack(side="left")
+        self.search_entry = tk.Entry(filter_frame, font=("Segoe UI", 10), bg="#1e293b", fg="white", insertbackground="white")
         self.search_entry.pack(side="left", fill="x", expand=True, padx=8)
         self.search_entry.bind("<KeyRelease>", self.filter_packages)
 
@@ -109,8 +110,6 @@ class AdbOptimizerApp:
         btn_uninst_all = tk.Button(btn_box, text="🔥 Uninstall ALL User Apps", font=("Segoe UI", 10, "bold"), bg="#b91c1c", fg="white", relief="flat", padx=14, pady=6, command=self.uninstall_all_user_apps)
         btn_uninst_all.pack(side="right", padx=5)
 
-        self.all_packages = []
-
     def build_tweaks_tab(self):
         tweaks = [
             ("⚡ Turn OFF All System Animations", "Disables window & transition scale to make emulator super fast", self.tweak_disable_animations),
@@ -128,10 +127,10 @@ class AdbOptimizerApp:
             info = tk.Frame(card, bg="#1e293b")
             info.pack(side="left", fill="x", expand=True)
 
-            lbl_n = tk.Label(info, text=name, font=("Segoe UI", 10.5, "bold"), fg="#f8fafc", bg="#1e293b")
+            lbl_n = tk.Label(info, text=name, font=("Segoe UI", 11, "bold"), fg="#f8fafc", bg="#1e293b")
             lbl_n.pack(anchor="w")
 
-            lbl_d = tk.Label(info, text=desc, font=("Segoe UI", 8.5), fg="#94a3b8", bg="#1e293b")
+            lbl_d = tk.Label(info, text=desc, font=("Segoe UI", 9), fg="#94a3b8", bg="#1e293b")
             lbl_d.pack(anchor="w")
 
             btn = tk.Button(card, text="Apply Tweak ⚡", font=("Segoe UI", 9, "bold"), bg="#10b981", fg="white", relief="flat", padx=12, pady=5, command=cmd_func)
@@ -167,7 +166,6 @@ class AdbOptimizerApp:
                     connected_dev = p
                     break
 
-            # Check devices
             dev_res = subprocess.run(["adb", "devices"], capture_output=True, text=True)
             lines = [l.split()[0] for l in dev_res.stdout.strip().split('\n')[1:] if "device" in l]
 
@@ -194,7 +192,7 @@ class AdbOptimizerApp:
         threading.Thread(target=_bg, daemon=True).start()
 
     def filter_packages(self, event):
-        query = self.search_entry.get().lower().trim() if hasattr(self.search_entry.get(), 'trim') else self.search_entry.get().lower().strip()
+        query = self.search_entry.get().strip().lower()
         self.pkg_listbox.delete(0, tk.END)
         for p in self.all_packages:
             if not query or query in p.lower():
